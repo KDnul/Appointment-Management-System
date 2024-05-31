@@ -1,81 +1,81 @@
 package kduong.c195software.model;
 
-import java.util.Locale;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Kelvin Duong
  */
 
-public class Customer {
-    private int customerId; // Auto-generated ID
-    private String customerName;
-    private String customerAddress;
-    private int customerPostalCode;
-    private String customerPhoneNumber;
-    private int customerDivisionId;
+public class Customer extends DataTracker {
+    private int id; // Auto-generated ID
+    private String name;
+    private String address;
+    private int postalCode;
+    private String phoneNumber;
+    private int divisionId;
 
     /** Customer Constructor
-     @param customerId Customer Id
-     @param customerName Customer Name
-     @param customerAddress Customer Address
-     @param customerPostalCode Customer Postal Code
-     @param customerPhoneNumber Customer Phone Number
-     @param customerDivisionId  Customer Zone Id. */
-    public Customer(int customerId, String customerName, String customerAddress, int customerPostalCode, String customerPhoneNumber, int customerDivisionId) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerAddress = customerAddress;
-        this.customerPostalCode = customerPostalCode;
-        this.customerPhoneNumber = customerPhoneNumber;
-        this.customerDivisionId = customerDivisionId;
+     @param id Customer Id
+     @param name Customer Name
+     @param address Customer Address
+     @param postalCode Customer Postal Code
+     @param phoneNumber Customer Phone Number
+     @param divisionId  Customer Zone Id. */
+    public Customer(int id, String name, String address, int postalCode, String phoneNumber,LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.divisionId = divisionId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getId() {
+        return id;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCustomerAddress() {
-        return customerAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public int getCustomerPostalCode() {
-        return customerPostalCode;
+    public int getPostalCode() {
+        return postalCode;
     }
 
-    public void setCustomerPostalCode(int customerPostalCode) {
-        this.customerPostalCode = customerPostalCode;
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getCustomerPhoneNumber() {
-        return customerPhoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setCustomerPhoneNumber(String customerPhoneNumber) {
-        this.customerPhoneNumber = customerPhoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getCustomerDivisionId() {
-        return customerDivisionId;
+    public int getDivisionId() {
+        return divisionId;
     }
 
-    public void setCustomerDivisionId(int customerDivisionId) {
-        this.customerDivisionId = customerDivisionId;
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 }
