@@ -1,47 +1,48 @@
 package kduong.c195software.model;
 
 public class Contact {
-    private int contactId;
-    private String contactName;
-    private String contactEmail;
-
-    /** @return contactId. */
-    public int getContactId() {
-        return contactId;
-    }
-
-    /** @param contactId Sets Contact id. */
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
-    }
-
-    /** @return contactName. */
-    public String getContactName() {
-        return contactName;
-    }
-
-    /** @param contactName Sets Contact Name. */
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    /** @return contactEmail. */
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    /** @param contactEmail Sets Contact Email. */
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
+    private int id;
+    private String name;
+    private String email;
 
     /** Contact Constructor
-     @param contactId Customer Id
-     @param contactName Customer Name
-     @param contactEmail Customer Email. */
-    public Contact(int contactId, String contactName, String contactEmail) {
-        this.contactId = contactId;
-        this.contactName = contactName;
-        this.contactEmail = contactEmail;
+     @param id Object Id
+     @param name Object Name
+     @param email Object Email. */
+    public Contact(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
+
+    /** @return id. */
+    public int getId() {
+        return id;
+    }
+
+    /** @param id Sets the id. */
+    public void setContactId(int id) {
+        this.id = id;
+    }
+
+    /** @return the name. */
+    public String getName() {
+        return name;
+    }
+
+    /** @param name Sets the name. */
+    public void setContactName(String name) {
+        this.name = name;
+    }
+
+    /** @return the email. */
+    public String getEmail() {
+        return email;
+    }
+
+    /** @param email Sets Contact Email. */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

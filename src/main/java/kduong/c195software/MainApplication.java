@@ -1,5 +1,6 @@
 package kduong.c195software;
 
+import helper.CountryQuery;
 import helper.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainApplication extends Application {
     @Override
@@ -18,11 +20,23 @@ public class MainApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         JDBC.openConnection();
 
-        launch();
+        int rowsAffected = CountryQuery.insert("USA");
+        CountryQuery.insert("Russia");
+        CountryQuery.insert("China");
 
+        if(rowsAffected > 0) {
+            System.out.println("Delete Successful");
+        } else {
+            System.out.println("Delete Failed");
+        }
+
+        CountryQuery.select(38);
+
+        launch();
+        CountryQuery.deleteAll();
         JDBC.closeConnection();
     }
 }

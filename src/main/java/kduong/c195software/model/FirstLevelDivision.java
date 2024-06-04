@@ -4,36 +4,50 @@ import java.time.LocalDateTime;
 
 public class FirstLevelDivision extends DataTracker{
     private int id;
-    private String division;
+    private String name;
     private int countryId;
 
-    public FirstLevelDivision(int id, String division, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int countryId) {
+    /** First Level Division Constructor
+     @param id Object id
+     @param name Object name
+     @param createDate Object create date
+     @param createdBy Object created by
+     @param lastUpdate Object last update
+     @param lastUpdatedBy Object last updated by. */
+    public FirstLevelDivision(int id, String name, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int countryId) {
         this.id = id;
-        this.division = division;
+        this.name = name;
         this.countryId = countryId;
     }
 
-    public void setId( int id) {
+    /** @param id Sets the id. */
+    public void setId(int id) {
         this.id = id;
     }
 
+    /** @return the id. */
     public int getId() {
         return id;
     }
 
-    public void setDivision() {
-        this.division = division;
+    /** @param name Sets the name. */
+    public void setDivision(String name) {
+        this.name = name;
     }
+
+    /** @return the name. */
     public String getDivision() {
-        return division;
+        return name;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    /** @param id Sets the id. */
+    public void setCountryId(int id) {
+        this.countryId = id;
     }
 
+    /** @return the id. */
     public int getCountryId() {
-        return countryId;
+        return id;
     }
 
 }
