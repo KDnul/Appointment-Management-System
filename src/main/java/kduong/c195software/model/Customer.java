@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * @author Kelvin Duong
  */
 
-public class Customer extends DataTracker {
+public class Customer {
     private int id; // Auto-generated ID
     private String name;
     private String address;
@@ -21,12 +21,8 @@ public class Customer extends DataTracker {
      @param address Customer Address
      @param postalCode Customer Postal Code
      @param phoneNumber Customer Phone Number
-     @param createDate Object create date
-     @param createdBy Object created by
-     @param lastUpdate Object last update
-     @param lastUpdatedBy Object last updated by
      @param divisionId  Customer Zone Id. */
-    public Customer(int id, String name, String address, int postalCode, String phoneNumber,LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
+    public Customer(int id, String name, String address, int postalCode, String phoneNumber,int divisionId) {
         this.id = id;
         this.name = name;
         this.address = address;

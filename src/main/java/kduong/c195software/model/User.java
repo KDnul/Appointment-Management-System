@@ -2,20 +2,19 @@ package kduong.c195software.model;
 
 import java.time.LocalDateTime;
 
-public class User extends DataTracker {
+public class User {
     private int id;
     private String name;
+    private String password;
 
     /** User constructor
      @param id Object id
      @param name Object name
-     @param createDate Object create date
-     @param createdBy Object created by
-     @param lastUpdate Object last update
-     @param lastUpdatedBy Object last updated by. */
-    public User(int id, String name, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy) {
+     @param password Object password. */
+    public User(int id, String name, String password) {
         this.id = id;
         this.name = name;
+        this.password = password;
     }
 
     /** @return the id. */
@@ -37,4 +36,10 @@ public class User extends DataTracker {
     public void setName(String name) {
         this.name = name;
     }
+
+    /** @return the password */
+    public String getPassword() {return password;}
+
+    /** @param password Sets the password */
+    public void setPassword(String password) {this.password = password;}
 }

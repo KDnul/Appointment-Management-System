@@ -2,19 +2,15 @@ package kduong.c195software.model;
 
 import java.time.LocalDateTime;
 
-public class FirstLevelDivision extends DataTracker{
+public class FirstLevelDivision {
     private int id;
     private String name;
     private int countryId;
 
     /** First Level Division Constructor
      @param id Object id
-     @param name Object name
-     @param createDate Object create date
-     @param createdBy Object created by
-     @param lastUpdate Object last update
-     @param lastUpdatedBy Object last updated by. */
-    public FirstLevelDivision(int id, String name, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int countryId) {
+     @param name Object name. */
+    public FirstLevelDivision(int id, String name,int countryId) {
         this.id = id;
         this.name = name;
         this.countryId = countryId;

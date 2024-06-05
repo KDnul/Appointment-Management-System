@@ -14,8 +14,8 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        stage.setTitle("Scheduler!");
         stage.setScene(scene);
         stage.show();
     }
@@ -23,20 +23,19 @@ public class MainApplication extends Application {
     public static void main(String[] args) throws SQLException {
         JDBC.openConnection();
 
-        int rowsAffected = CountryQuery.insert("USA");
-        CountryQuery.insert("Russia");
-        CountryQuery.insert("China");
+//        int rowsAffected = CountryQuery.insert("USA");
+//        CountryQuery.insert("Russia");
+//        CountryQuery.insert("China");
+//
+//        if(rowsAffected > 0) {
+//            System.out.println("Delete Successful");
+//        } else {
+//            System.out.println("Delete Failed");
+//        }
 
-        if(rowsAffected > 0) {
-            System.out.println("Delete Successful");
-        } else {
-            System.out.println("Delete Failed");
-        }
-
-        CountryQuery.select(38);
+        CountryQuery.select();
 
         launch();
-        CountryQuery.deleteAll();
         JDBC.closeConnection();
     }
 }

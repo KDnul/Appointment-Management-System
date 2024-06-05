@@ -1,19 +1,13 @@
 package kduong.c195software.model;
 
-import java.time.LocalDateTime;
-
-public class Country extends DataTracker {
+public class Country {
     private int id;
     private String name;
 
     /** Country Constructor
      @param id Object id
-     @param name Object name
-     @param createDate Object create date
-     @param createdBy Object created by
-     @param lastUpdate Object last update
-     @param lastUpdatedBy Object last updated by. */
-    public Country(int id, String name,LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy) {
+     @param name Object name. */
+    public Country(int id, String name) {
         this.id = id;
         this.name = name;
     }
