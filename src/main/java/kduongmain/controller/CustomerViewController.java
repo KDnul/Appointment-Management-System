@@ -1,4 +1,4 @@
-package kduong.c195software.controller;
+package kduongmain.controller;
 
 public class CustomerViewController {
 }

@@ -1,4 +1,4 @@
-package kduong.c195software.model;
+package kduongmain.model;
 
 
 import java.time.LocalDateTime;

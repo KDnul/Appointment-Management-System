@@ -1,4 +1,4 @@
-package kduong.c195software.controller;
+package kduongmain.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

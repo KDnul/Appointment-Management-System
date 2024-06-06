@@ -1,4 +1,4 @@
-package kduong.c195software.model;
+package kduongmain.model;
 
 public class Contact {
     private int id;

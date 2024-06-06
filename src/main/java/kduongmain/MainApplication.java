@@ -1,4 +1,4 @@
-package kduong.c195software;
+package kduongmain;
 
 import helper.CountryQuery;
 import helper.JDBC;
@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainApplication extends Application {
     @Override
@@ -23,17 +25,8 @@ public class MainApplication extends Application {
     public static void main(String[] args) throws SQLException {
         JDBC.openConnection();
 
-//        int rowsAffected = CountryQuery.insert("USA");
-//        CountryQuery.insert("Russia");
-//        CountryQuery.insert("China");
-//
-//        if(rowsAffected > 0) {
-//            System.out.println("Delete Successful");
-//        } else {
-//            System.out.println("Delete Failed");
-//        }
 
-        CountryQuery.select();
+//        CountryQuery.select();
 
         launch();
         JDBC.closeConnection();

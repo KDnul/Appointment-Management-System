@@ -4,8 +4,8 @@ module kduong.c195software {
     requires java.sql;
 
 
-    opens kduong.c195software to javafx.fxml;
-    exports kduong.c195software;
-    exports kduong.c195software.controller;
-    opens kduong.c195software.controller to javafx.fxml;
+    opens kduongmain to javafx.fxml;
+    exports kduongmain;
+    exports kduongmain.controller;
+    opens kduongmain.controller to javafx.fxml;
 }
