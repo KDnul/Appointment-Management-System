@@ -10,8 +10,8 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private ZonedDateTime timeStart;
-    private ZonedDateTime timeEnd;
+    private LocalDateTime  timeStart;
+    private LocalDateTime  timeEnd;
     private int customerId;
     private int userId;
     private int contactId;
@@ -24,14 +24,10 @@ public class Appointment {
      @param type Object type
      @param timeStart Object time starts
      @param timeEnd Object time ends
-     @param createDate Object create date
-     @param createdBy Object created by
-     @param lastUpdate Object last update
-     @param lastUpdatedBy Object last updated by
      @param customerId Object customer id
      @param userId Object user id
      @param contactId Object contact id. */
-    public Appointment(int id, String title, String description, String location, String type, ZonedDateTime timeStart, ZonedDateTime timeEnd,LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int customerId, int userId, int contactId) {
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -95,22 +91,22 @@ public class Appointment {
     }
 
     /** @return the timeStart. */
-    public ZonedDateTime getTimeStart() {
+    public LocalDateTime  getTimeStart() {
         return timeStart;
     }
 
     /** @param timeStart Sets the time start. */
-    public void setTimeStart(ZonedDateTime timeStart) {
+    public void setTimeStart(LocalDateTime timeStart) {
         this.timeStart = timeStart;
     }
 
     /** @return the timeEnd. */
-    public ZonedDateTime getTimeEnd() {
+    public LocalDateTime  getTimeEnd() {
         return timeEnd;
     }
 
     /** @param timeEnd Sets the time end. */
-    public void setTimeEnd(ZonedDateTime timeEnd) {
+    public void setTimeEnd(LocalDateTime timeEnd) {
         this.timeEnd = timeEnd;
     }
 

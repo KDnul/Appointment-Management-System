@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="kduongmain.controller.AppointmentViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="486.0" prefWidth="938.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.AppointmentViewController">
+   <children>
+      <Label layoutX="23.0" layoutY="14.0" text="Appointments">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox layoutX="417.0" layoutY="14.0" prefHeight="27.0" prefWidth="323.0">
+         <children>
+            <RadioButton mnemonicParsing="false" text="Week">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="AppointmentTG" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Month" toggleGroup="$AppointmentTG">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" selected="true" text="All" toggleGroup="$AppointmentTG" />
+         </children>
+      </HBox>
+      <TableView layoutX="23.0" layoutY="59.0" prefHeight="364.0" prefWidth="889.0">
+        <columns>
+          <TableColumn fx:id="appointmentIdCol" prefWidth="99.0" text="Appointment_ID" />
+          <TableColumn fx:id="appointmentTitleCol" prefWidth="84.0" text="Title" />
+            <TableColumn fx:id="appointmentDescriptionCol" prefWidth="90.0" text="Description" />
+            <TableColumn fx:id="appointmentLocationCol" prefWidth="83.0" text="Location" />
+            <TableColumn fx:id="appointmentContactCol" prefWidth="91.0" text="Contact" />
+            <TableColumn fx:id="appointmentTypeCol" prefWidth="82.0" text="Type" />
+            <TableColumn fx:id="appointmentStartCol" prefWidth="107.0" text="Start Date/Time" />
+            <TableColumn fx:id="appointmentEndCol" prefWidth="99.0" text="End Date/Time" />
+            <TableColumn fx:id="appointmentCustomerIdCol" prefWidth="83.0" text="Customer_ID" />
+            <TableColumn fx:id="appointmentUserIdCol" prefWidth="56.0" text="User_ID" />
+        </columns>
+      </TableView>
+      <Button fx:id="appointmentAddBtn" layoutX="373.0" layoutY="423.0" mnemonicParsing="false" onAction="#onAppointmentAddBtnClicked" text="Add Appointment" />
+      <Button fx:id="appointmentModifyBtn" layoutX="505.0" layoutY="423.0" mnemonicParsing="false" onAction="#onAppointmentModifyBtnClicked" text="Modify Appointment" />
+      <Button fx:id="appointmentBackBtn" layoutX="843.0" layoutY="448.0" mnemonicParsing="false" onAction="#onAppointmentBackBtnClicked" prefHeight="25.0" prefWidth="81.0" text="Back" />
+   </children>
 </AnchorPane>

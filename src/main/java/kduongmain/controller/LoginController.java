@@ -1,19 +1,25 @@
 package kduongmain.controller;
 
+import helper.UserQuery;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -49,10 +55,14 @@ public class LoginController implements Initializable {
     @FXML
     private Button loginCancelBtn;
 
+    // FXML Event Handlers
+    Stage stage;
+    Parent scene;
+
 
     @FXML
-    void onLoginSubmitBtnClicked(ActionEvent event) {
-        ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
+    void onLoginSubmitBtnClicked(ActionEvent event) throws IOException {
+        ResourceBundle rb = ResourceBundle.getBundle("Nat", Locale.getDefault());
         if(Locale.getDefault().getLanguage().equals("fr")) {
             try {
                 if(loginUserTxt.getText().isEmpty() || loginPasswordTxt.getText().isEmpty()) {
@@ -62,6 +72,24 @@ public class LoginController implements Initializable {
                 System.out.println("ERROR: " + e.getMessage());
             }
         }
+
+        String loginUser = loginUserTxt.getText();
+        String loginPass = loginPasswordTxt.getText();
+
+        try {
+            if (UserQuery.authenticateUser(loginUser, loginPass) > -1) {
+                System.out.println("SUCCESS AUTHENTICATING USER");
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/test.fxml"))));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            } else {
+                loginErrorLbl.setText(rb.getString("Incorrect"));
+            }
+        } catch(Exception e) {
+            System.out.println("ERROR AUTHENTICATING USER " +  e);
+        }
+
 
     }
 
@@ -94,7 +122,7 @@ public class LoginController implements Initializable {
 //        }
 
         try{
-            ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
+            ResourceBundle rb = ResourceBundle.getBundle("Nat", Locale.getDefault());
 
             ZoneId zone = ZoneId.systemDefault();
 

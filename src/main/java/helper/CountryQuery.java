@@ -26,8 +26,7 @@ public abstract class CountryQuery {
         String sql = "DELETE FROM COUNTRIES WHERE Country_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setInt(1, countryId);
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected;
+        return ps.executeUpdate();
     }
 
     public static void deleteAll() throws SQLException {
