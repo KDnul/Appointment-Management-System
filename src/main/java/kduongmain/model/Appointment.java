@@ -40,104 +40,184 @@ public class Appointment {
         this.contactId = contactId;
     }
 
-    /** @return the id. */
     public int getId() {
         return id;
     }
 
-    /** @param id Sets the id. */
     public void setId(int id) {
         this.id = id;
     }
 
-    /** @return the title. */
     public String getTitle() {
         return title;
     }
 
-    /** @param title Sets the title. */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /** @return the description */
     public String getDescription() {
         return description;
     }
 
-    /** @param description Sets the description */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /** @return the location. */
     public String getLocation() {
         return location;
     }
 
-    /** @param location sets the location. */
     public void setLocation(String location) {
         this.location = location;
     }
 
-    /** @return the type. */
     public String getType() {
         return type;
     }
 
-    /** @param type Sets the type. */
     public void setType(String type) {
         this.type = type;
     }
 
-    /** @return the timeStart. */
-    public LocalDateTime  getTimeStart() {
+    public LocalDateTime getTimeStart() {
         return timeStart;
     }
 
-    /** @param timeStart Sets the time start. */
     public void setTimeStart(LocalDateTime timeStart) {
         this.timeStart = timeStart;
     }
 
-    /** @return the timeEnd. */
-    public LocalDateTime  getTimeEnd() {
+    public LocalDateTime getTimeEnd() {
         return timeEnd;
     }
 
-    /** @param timeEnd Sets the time end. */
     public void setTimeEnd(LocalDateTime timeEnd) {
         this.timeEnd = timeEnd;
     }
 
-    /** @return the customerId. */
     public int getCustomerId() {
         return customerId;
     }
 
-    /** @param customerId Sets the customer id. */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    /** @return the userId. */
     public int getUserId() {
         return userId;
     }
 
-    /** @param userId Sets the user id. */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    /** @return contactId. */
     public int getContactId() {
         return contactId;
     }
 
-    /** @param contactId Sets the contact id. */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
+
+//    /** @return the id. */
+//    public int getId() {
+//        return id;
+//    }
+//
+//    /** @param id Sets the id. */
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    /** @return the title. */
+//    public String getTitle() {
+//        return title;
+//    }
+//
+//    /** @param title Sets the title. */
+//    public void setTitle(String title) {
+//        this.title = title;
+//    }
+//
+//    /** @return the description */
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    /** @param description Sets the description */
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    /** @return the location. */
+//    public String getLocation() {
+//        return location;
+//    }
+//
+//    /** @param location sets the location. */
+//    public void setLocation(String location) {
+//        this.location = location;
+//    }
+//
+//    /** @return the type. */
+//    public String getType() {
+//        return type;
+//    }
+//
+//    /** @param type Sets the type. */
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//
+//    /** @return the timeStart. */
+//    public LocalDateTime  getTimeStart() {
+//        return timeStart;
+//    }
+//
+//    /** @param timeStart Sets the time start. */
+//    public void setTimeStart(LocalDateTime timeStart) {
+//        this.timeStart = timeStart;
+//    }
+//
+//    /** @return the timeEnd. */
+//    public LocalDateTime  getTimeEnd() {
+//        return timeEnd;
+//    }
+//
+//    /** @param timeEnd Sets the time end. */
+//    public void setTimeEnd(LocalDateTime timeEnd) {
+//        this.timeEnd = timeEnd;
+//    }
+//
+//    /** @return the customerId. */
+//    public int getCustomerId() {
+//        return customerId;
+//    }
+//
+//    /** @param customerId Sets the customer id. */
+//    public void setCustomerId(int customerId) {
+//        this.customerId = customerId;
+//    }
+//
+//    /** @return the userId. */
+//    public int getUserId() {
+//        return userId;
+//    }
+//
+//    /** @param userId Sets the user id. */
+//    public void setUserId(int userId) {
+//        this.userId = userId;
+//    }
+//
+//    /** @return contactId. */
+//    public int getContactId() {
+//        return contactId;
+//    }
+//
+//    /** @param contactId Sets the contact id. */
+//    public void setContactId(int contactId) {
+//        this.contactId = contactId;
+//    }
 
 }

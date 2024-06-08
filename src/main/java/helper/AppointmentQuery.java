@@ -1,6 +1,5 @@
 package helper;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import kduongmain.model.Appointment;
@@ -11,9 +10,11 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class AppointmentQuery {
-    private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    private static final ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
-    /** Method to put all appointments to a list to retrieve for later use. */
+    /**
+     * Method to put all appointments to a list to retrieve for later use.
+     */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         try {
             String sql = "SELECT * FROM APPOINTMENTS";

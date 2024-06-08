@@ -80,7 +80,7 @@ public class LoginController implements Initializable {
             if (UserQuery.authenticateUser(loginUser, loginPass) > -1) {
                 System.out.println("SUCCESS AUTHENTICATING USER");
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/test.fxml"))));
+                scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/MainMenu.fxml"))));
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {

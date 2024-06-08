@@ -30,7 +30,7 @@
             <RadioButton mnemonicParsing="false" selected="true" text="All" toggleGroup="$AppointmentTG" />
          </children>
       </HBox>
-      <TableView layoutX="23.0" layoutY="59.0" prefHeight="364.0" prefWidth="889.0">
+      <TableView fx:id="appointmentTableView" layoutX="23.0" layoutY="59.0" prefHeight="364.0" prefWidth="889.0">
         <columns>
           <TableColumn fx:id="appointmentIdCol" prefWidth="99.0" text="Appointment_ID" />
           <TableColumn fx:id="appointmentTitleCol" prefWidth="84.0" text="Title" />
