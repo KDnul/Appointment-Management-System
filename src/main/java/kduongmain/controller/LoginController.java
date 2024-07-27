@@ -59,6 +59,12 @@ public class LoginController implements Initializable {
     Stage stage;
     Parent scene;
 
+    // Grab current logged in user
+    private static String currentUserName;
+    public static String getCurrentUserName() {
+        return currentUserName;
+    }
+
 
     @FXML
     void onLoginSubmitBtnClicked(ActionEvent event) throws IOException {
@@ -79,6 +85,7 @@ public class LoginController implements Initializable {
         try {
             if (UserQuery.authenticateUser(loginUser, loginPass) > -1) {
                 System.out.println("SUCCESS AUTHENTICATING USER");
+                currentUserName = loginUser;
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/MainMenu.fxml"))));
                 stage.setScene(new Scene(scene));
