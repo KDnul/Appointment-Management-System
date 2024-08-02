@@ -23,8 +23,8 @@
       <TextField fx:id="addCustomerPhoneNumberTxt" layoutX="204.0" layoutY="198.0" />
       <Label layoutX="142.0" layoutY="269.0" text="Division" />
       <Label layoutX="141.0" layoutY="235.0" text="Country" />
-      <ComboBox fx:id="addCustomerDivisionCB" layoutX="202.0" layoutY="265.0" prefWidth="150.0" />
-      <ComboBox fx:id="addCustomerCountryCB" layoutX="203.0" layoutY="231.0" prefWidth="150.0" />
+      <ComboBox fx:id="addCustomerDivisionCB" layoutX="202.0" layoutY="265.0" onAction="#onCountryCBFilter" prefWidth="150.0" />
+      <ComboBox fx:id="addCustomerCountryCB" layoutX="203.0" layoutY="231.0" onAction="#onDivisionCBFilter" prefWidth="150.0" />
       <Button fx:id="addCustomerSaveBtn" layoutX="211.0" layoutY="324.0" mnemonicParsing="false" onAction="#onAddCustomerSaveBtnClicked" text="Save" />
       <Button fx:id="addCustomerCancelBtn" layoutX="279.0" layoutY="324.0" mnemonicParsing="false" onAction="#onAddCustomerCancelBtnClicked" text="Cancel" />
       <Label fx:id="addCustomerErrorLbl" layoutX="232.0" layoutY="360.0" textFill="RED" />

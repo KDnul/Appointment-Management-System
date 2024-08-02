@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="505.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.CustomerViewController">
+<AnchorPane prefHeight="505.0" prefWidth="894.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.CustomerViewController">
    <children>
-      <TableView fx:id="customerTableVIew" layoutX="15.0" layoutY="46.0" prefHeight="343.0" prefWidth="748.0">
+      <TableView fx:id="customerTableVIew" layoutX="29.0" layoutY="44.0" prefHeight="343.0" prefWidth="855.0">
         <columns>
           <TableColumn fx:id="customerIdCol" prefWidth="81.0" text="Customer ID" />
           <TableColumn fx:id="customerNameCol" prefWidth="87.0" text="Name" />
@@ -15,6 +15,7 @@
             <TableColumn fx:id="customerPhoneNumberCol" prefWidth="115.0" text="Phone Number" />
             <TableColumn fx:id="customerDivisionCol" prefWidth="128.0" text="State/Province" />
             <TableColumn fx:id="customerCountryCol" prefWidth="112.0" text="Country" />
+            <TableColumn prefWidth="75.0" text="Division" />
         </columns>
       </TableView>
       <Button fx:id="customerAddBtn" layoutX="222.0" layoutY="397.0" mnemonicParsing="false" onAction="#onCustomerAddBtnClicked" text="Add Customer" />

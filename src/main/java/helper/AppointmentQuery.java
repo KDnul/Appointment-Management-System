@@ -3,6 +3,7 @@ package helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import kduongmain.model.Appointment;
+import kduongmain.model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

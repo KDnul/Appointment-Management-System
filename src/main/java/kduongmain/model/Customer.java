@@ -11,7 +11,7 @@ public class Customer {
     private int id; // Auto-generated ID
     private String name;
     private String address;
-    private int postalCode;
+    private String postalCode;
     private String phoneNumber;
     private int divisionId;
 
@@ -22,7 +22,7 @@ public class Customer {
      @param postalCode Customer Postal Code
      @param phoneNumber Customer Phone Number
      @param divisionId  Customer Zone Id. */
-    public Customer(int id, String name, String address, int postalCode, String phoneNumber,int divisionId) {
+    public Customer(int id, String name, String address, String postalCode, String phoneNumber,int divisionId) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -62,12 +62,12 @@ public class Customer {
     }
 
     /** @return the postalCode. */
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
     /** @param postalCode Sets the postal code. */
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

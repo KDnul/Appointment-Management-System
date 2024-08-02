@@ -97,7 +97,7 @@ public class AppointmentViewController implements Initializable {
 
 
         } catch (SQLException e) {
-            System.out.println("ERROR GETTING ALL APPOINTMENTS");
+            System.out.println("ERROR GETTING ALL APPOINTMENTS: " + e.getMessage());
         }
 
     }

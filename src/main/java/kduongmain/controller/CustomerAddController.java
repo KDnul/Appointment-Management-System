@@ -129,9 +129,106 @@ public class CustomerAddController implements Initializable {
                 alert.showAndWait();
             }
         }
+    }
 
+
+    @FXML
+    void onCountryCBFilter(ActionEvent event) {
+        String selectedDivision = addCustomerDivisionCB.getValue();
+
+
+        System.out.println("ATTEMPTING TO FILTER COUNTRY.");
+
+        if(selectedDivision != null) {
+            try {
+                String associatedCountry = associatedCountry(selectedDivision);
+                    if(associatedCountry != null) {
+                        addCustomerCountryCB.setValue(associatedCountry);
+                    }
+            } catch (SQLException e) {
+                System.out.println("ERROR FILTERING COUNTRY: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    void onDivisionCBFilter(ActionEvent event) throws SQLException {
+        String selectedCountry = addCustomerCountryCB.getValue();
+        System.out.println("DIVISION CB FILTER ACTIVATED");
+
+        if(selectedCountry != null) {
+            try {
+                List<String> divisions = associatedDivision(selectedCountry);
+
+                addCustomerDivisionCB.getItems().clear();
+                addCustomerDivisionCB.getItems().addAll(divisions);
+
+                System.out.println("Divisions for country " + selectedCountry + ": " + divisions);
+            }catch (SQLException e) {
+                System.out.println("ERROR FILTERING DIVISIONS BY COUNTRY: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Country not found by division.");
+        }
+    }
+
+
+    /** Gets associated country by division name */
+    private String associatedCountry(String division) throws SQLException {
+        String associatedCountry = null;
+
+        String sql = "SELECT c.Country FROM countries c " +
+                "JOIN first_level_divisions f on c.Country_ID = f.Country_ID " +
+                "WHERE f.Division = ?";
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setString(1, division);
+
+            try {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    associatedCountry = rs.getString("Country");
+                }
+            }catch (SQLException e) {
+                System.out.println("ERROR GETTING ASSOCIATED COUNTRY: " + e.getMessage());
+            }
+
+        }catch (SQLException e) {
+            System.out.println("ERROR GETTING ASSOCIATED COUNTRY: " + e.getMessage());
+        }
+
+        return associatedCountry;
 
     }
+
+    /** Gets associated division by country */
+    private ObservableList<String> associatedDivision(String country) throws SQLException {
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+//        List<String> divisions = new ArrayList<>();
+
+        String sql = "SELECT Division FROM first_level_divisions WHERE Country_ID = " +
+                "(SELECT Country_ID FROM countries WHERE Country = ?)";
+
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setString(1, country);
+
+            // Execute query
+            try {
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    divisions.add(rs.getString("Division"));
+                }
+            }catch (SQLException e) {
+                System.out.println("ERROR GETTING ASSOCIATED DIVISION BY COUNTRY: " + e.getMessage());
+            }
+        }catch (SQLException e) {
+            System.out.println("ERROR GETTING ASSOCIATED DIVISION BY COUNTRY: " + e.getMessage());
+        }
+
+        return divisions;
+    }
+
     /** Populates the division combo box. */
     private void populateDivisionCB() {
         String sql = "SELECT Division FROM first_level_divisions";
@@ -169,6 +266,7 @@ public class CustomerAddController implements Initializable {
         }
     }
 
+    /** Gets Division id based on name */
     private int getDivisionId(String division) throws SQLException {
         String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
 
@@ -186,6 +284,7 @@ public class CustomerAddController implements Initializable {
         return divisionId;
     }
 
+    /** Gets Country ID by name */
     private int getCountryId (String country) throws SQLException {
         String sql = "SELECT Country_ID FROM countries WHERE Country = ?";
 
