@@ -1,39 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1488.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.c195.c195.controller.Customers">
-    <TableView fx:id="custTable" layoutX="16.0" layoutY="15.0" prefHeight="338.0" prefWidth="803.0">
-        <columns>
-            <TableColumn fx:id="custIdCol" prefWidth="90.0" text="Customer ID" />
-            <TableColumn fx:id="custNameCol" prefWidth="105.0" text="Customer Name" />
-            <TableColumn fx:id="custPhoneCol" prefWidth="104.0" text="Phone #" />
-            <TableColumn fx:id="custAddressCol" prefWidth="117.0" text="Address" />
-            <TableColumn fx:id="custPostalCol" prefWidth="127.0" text="Postal Code" />
-            <TableColumn fx:id="custFirstCol" prefWidth="124.0" text="State/Providence" />
-            <TableColumn fx:id="custCountryCol" prefWidth="124.0" text="Country" />
-            <TableColumn fx:id="custCreateDateCol" prefWidth="150.0" text="Create Date" />
-            <TableColumn fx:id="custCreatedByCol" prefWidth="100.0" text="Created By" />
-            <TableColumn fx:id="custLastUpdateCol" prefWidth="150.0" text="Last Update" />
-            <TableColumn fx:id="custLastUpdatedByCol" prefWidth="100.0" text="Last Updated By" />
-        </columns>
-    </TableView>
-    <GridPane layoutX="16.0" layoutY="363.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-        <Button fx:id="custDeleteLabel" mnemonicParsing="false" onAction="#actionCustDelete" prefWidth="75.0" text="Delete" GridPane.columnIndex="2" />
-        <Button fx:id="custAddLabel" mnemonicParsing="false" onAction="#actionCustAdd" prefWidth="75.0" text="Add" GridPane.columnIndex="1" />
-        <Button fx:id="custUpdateLabel" mnemonicParsing="false" onAction="#actionCustUpdate" prefWidth="75.0" text="Update" />
-    </GridPane>
-    <Button fx:id="backToMenu" layoutX="654.0" layoutY="446.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to Menu" />
-    <TextField id="custSearchTextField" fx:id="custSearchTextField" layoutX="611.0" layoutY="366.0" promptText="Enter ID or Name" />
-    <Text id="custSearchTextLabel" layoutX="485.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search for a Customer:" />
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f4e500; -fx-border-color: #000000; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.helloworldjfxtemplate.controller.CustomerModifyController">
+    <children>
+        <Label layoutX="216.0" layoutY="24.0" text="MODIFY CUSTOMER" textFill="#17009a" underline="true">
+            <font>
+                <Font name="System Bold Italic" size="18.0" />
+            </font>
+        </Label>
+        <GridPane layoutX="150.0" layoutY="59.0" prefHeight="267.0" prefWidth="300.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="132.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="29.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="139.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Customer ID:" textFill="#17009a" GridPane.halignment="RIGHT">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Customer Name:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Phone Number:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Address:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Postal Code:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Division:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <Label text="Country:" textFill="#17009a" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="tf_custID" disable="true" editable="false" GridPane.columnIndex="2" />
+                <TextField fx:id="tf_custName" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="tf_custPhone" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="tf_custAddr" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="tf_custPost" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <ComboBox fx:id="cb_custDivision" prefWidth="150.0" promptText="Choose Division" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <ComboBox fx:id="cb_custCountry" onAction="#setCb_custCountry" prefWidth="150.0" promptText="Choose Country" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            </children>
+        </GridPane>
+        <Button fx:id="btn_cancel" layoutX="349.0" layoutY="352.0" mnemonicParsing="false" onAction="#setBtn_cancel" style="-fx-background-color: #0800a1; -fx-cursor: hand;" text="CANCEL" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button fx:id="btn_save" layoutX="193.0" layoutY="352.0" mnemonicParsing="false" onAction="#setBtn_save" prefHeight="25.0" prefWidth="62.0" style="-fx-background-color: #0800a1; -fx-cursor: hand;" text="SAVE" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+    </children>
 </AnchorPane>

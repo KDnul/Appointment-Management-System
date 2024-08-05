@@ -10,12 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import kduongmain.MainApplication;
-import kduongmain.model.FirstLevelDivision;
+import kduongmain.model.Customer;
 
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -26,49 +27,80 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class CustomerAddController implements Initializable {
-
-    @FXML
-    private TextField addCustomerAddressTxt;
-
-    @FXML
-    private Button addCustomerCancelBtn;
+public class CustomerModifyController implements Initializable {
 
     @FXML
-    private ComboBox<String> addCustomerCountryCB;
+    private Label modCustomerErrorLbl;
 
     @FXML
-    private ComboBox<String> addCustomerDivisionCB;
+    private TextField modCustomerIdTxt;
 
     @FXML
-    private TextField addCustomerIdTxt;
+    private TextField modCustomerAddressTxt;
 
     @FXML
-    private TextField addCustomerNameTxt;
+    private Button modCustomerCancelBtn;
 
     @FXML
-    private TextField addCustomerPhoneNumberTxt;
+    private ComboBox<String> modCustomerCountryCB;
 
     @FXML
-    private TextField addCustomerPostalTxt;
+    private ComboBox<String> modCustomerDivisionCB;
 
     @FXML
-    private Button addCustomerSaveBtn;
+    private TextField modCustomerNameTxt;
 
     @FXML
-    private Label addCustomerErrorLbl;
+    private TextField modCustomerPhoneNumberTxt;
 
-    Stage stage;
+    @FXML
+    private TextField modCustomerPostalTxt;
+
+    @FXML
+    private Button modCustomerSaveBtn;
+
     Parent scene;
+    Stage stage;
 
     @FXML
-    void onAddCustomerCancelBtnClicked(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
+    void onModCustomerCancelBtnClicked(ActionEvent event) {
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+    }
+
+    @FXML
+    void onModCustomerSaveBtnClicked(ActionEvent event) throws SQLException, IOException {
+        int id = Integer.parseInt(modCustomerIdTxt.getText());
+        String name = modCustomerNameTxt.getText();
+        String address = modCustomerAddressTxt.getText();
+        String postal = modCustomerPostalTxt.getText();
+        String phone = modCustomerPhoneNumberTxt.getText();
+        String country = (String) modCustomerCountryCB.getValue();
+        String division = (String) modCustomerDivisionCB.getValue();
+
+        if (name.isEmpty() || address.isEmpty() || postal.isEmpty() || phone.isEmpty() || country == null || division == null) {
+            modCustomerErrorLbl.setText("Please fill out all required fields.");
+        } else {
+            // Generate Timestamp
+            LocalDateTime currentTime = LocalDateTime.now();
+            ZoneId utcZone = ZoneId.of("UTC");
+            ZonedDateTime utcTime = ZonedDateTime.of(currentTime, utcZone);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            Timestamp timestamp = Timestamp.valueOf(utcTime.format(formatter));
+
+            // Get the logged-in username
+            String createdBy = LoginController.getCurrentUserName();
+
+            // Get division and country id by name
+            int divisionId = getDivisionId(division);
+
+            // Insert customer into database
+            CustomerQuery.update(id,name, address, postal, phone, timestamp, createdBy, divisionId);
+
             // Return to Customer View Page
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/CustomerView.fxml"))));
@@ -79,53 +111,8 @@ public class CustomerAddController implements Initializable {
     }
 
     @FXML
-    void onAddCustomerSaveBtnClicked(ActionEvent event) {
-        String name = addCustomerNameTxt.getText();
-        String address = addCustomerAddressTxt.getText();
-        String postal = addCustomerPostalTxt.getText();
-        String phone = addCustomerPhoneNumberTxt.getText();
-        String country = (String) addCustomerCountryCB.getValue();
-        String division = (String) addCustomerDivisionCB.getValue();
-
-        if (name.isEmpty() || address.isEmpty() || postal.isEmpty() || phone.isEmpty() || country == null || division == null) {
-            addCustomerErrorLbl.setText("Please fill out all required fields.");
-        } else {
-            try {
-//                // Insert new customer into database
-//                String sql = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
-                // Generate Timestamp
-                LocalDateTime currentTime = LocalDateTime.now();
-                ZoneId utcZone = ZoneId.of("UTC");
-                ZonedDateTime utcTime = ZonedDateTime.of(currentTime, utcZone);
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                Timestamp timestamp = Timestamp.valueOf(utcTime.format(formatter));
-
-                // Get the logged-in username
-                String createdBy = LoginController.getCurrentUserName();
-
-                // Get division and country id by name
-                int divisionId = getDivisionId(division);
-
-                // Insert customer into database
-                CustomerQuery.insert(name, address, postal, phone, LocalDateTime.now(), createdBy,timestamp, createdBy, divisionId);
-
-                // Return to Customer View Page
-                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/CustomerView.fxml"))));
-                stage.setScene(new Scene(scene));
-                stage.show();
-            }catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-
-    @FXML
-    void onCountryCBFilter(ActionEvent event) {
-        String selectedDivision = addCustomerDivisionCB.getValue();
+    void onModCountryCBFilter(ActionEvent event) {
+        String selectedDivision = modCustomerDivisionCB.getValue();
 
 
         System.out.println("ATTEMPTING TO FILTER COUNTRY.");
@@ -133,26 +120,27 @@ public class CustomerAddController implements Initializable {
         if(selectedDivision != null) {
             try {
                 String associatedCountry = associatedCountry(selectedDivision);
-                    if(associatedCountry != null) {
-                        addCustomerCountryCB.setValue(associatedCountry);
-                    }
+                if(associatedCountry != null) {
+                    modCustomerCountryCB.setValue(associatedCountry);
+                }
             } catch (SQLException e) {
                 System.out.println("ERROR FILTERING COUNTRY: " + e.getMessage());
             }
         }
+
     }
 
     @FXML
-    void onDivisionCBFilter(ActionEvent event) throws SQLException {
-        String selectedCountry = addCustomerCountryCB.getValue();
+    void onModDivisionCBFilter(ActionEvent event) {
+        String selectedCountry = modCustomerCountryCB.getValue();
         System.out.println("DIVISION CB FILTER ACTIVATED");
 
         if(selectedCountry != null) {
             try {
                 List<String> divisions = associatedDivision(selectedCountry);
 
-                addCustomerDivisionCB.getItems().clear();
-                addCustomerDivisionCB.getItems().addAll(divisions);
+                modCustomerDivisionCB.getItems().clear();
+                modCustomerDivisionCB.getItems().addAll(divisions);
 
                 System.out.println("Divisions for country " + selectedCountry + ": " + divisions);
             }catch (SQLException e) {
@@ -161,8 +149,19 @@ public class CustomerAddController implements Initializable {
         } else {
             System.out.println("Country not found by division.");
         }
+
     }
 
+    public void sendCustomer(Customer customer) {
+        modCustomerIdTxt.setText(String.valueOf(customer.getId()));
+        modCustomerNameTxt.setText(customer.getName());
+        modCustomerAddressTxt.setText(customer.getAddress());
+        modCustomerPostalTxt.setText(customer.getPostalCode());
+        modCustomerPhoneNumberTxt.setText(customer.getPhoneNumber());
+        modCustomerCountryCB.setValue(customer.getCountry());
+        modCustomerDivisionCB.setValue(customer.getDivision());
+
+    }
 
     /** Gets associated country by division name */
     private String associatedCountry(String division) throws SQLException {
@@ -191,7 +190,6 @@ public class CustomerAddController implements Initializable {
         return associatedCountry;
 
     }
-
     /** Gets associated division by country */
     private ObservableList<String> associatedDivision(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
@@ -220,6 +218,24 @@ public class CustomerAddController implements Initializable {
         return divisions;
     }
 
+    private void populateCountryCB() {
+        String sql = "SELECT Country FROM countries";
+        ObservableList<String> countries = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                countries.add(rs.getString(("Country")));
+            }
+
+            modCustomerCountryCB.getItems().addAll(countries);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /** Populates the division combo box. */
     private void populateDivisionCB() {
         String sql = "SELECT Division FROM first_level_divisions";
@@ -232,26 +248,7 @@ public class CustomerAddController implements Initializable {
                 divisions.add(rs.getString("Division"));
             }
 
-            addCustomerDivisionCB.getItems().addAll(divisions);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /** Populates the country combo box */
-    private void populateCountryCB() {
-        String sql = "SELECT Country FROM countries";
-        ObservableList<String> countries = FXCollections.observableArrayList();
-
-        try {
-            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                countries.add(rs.getString(("Country")));
-            }
-
-            addCustomerCountryCB.getItems().addAll(countries);
-
+            modCustomerDivisionCB.getItems().addAll(divisions);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -275,27 +272,10 @@ public class CustomerAddController implements Initializable {
         return divisionId;
     }
 
-    /** Gets Country ID by name */
-    private int getCountryId (String country) throws SQLException {
-        String sql = "SELECT Country_ID FROM countries WHERE Country = ?";
-
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ps.setString(1, country);
-
-        ResultSet rs = ps.executeQuery();
-
-        int countryId = -1;
-
-        if (rs.next()) {
-            countryId = rs.getInt("Country_ID");
-        }
-
-        return countryId;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        populateDivisionCB();
         populateCountryCB();
+        populateDivisionCB();
+
     }
 }

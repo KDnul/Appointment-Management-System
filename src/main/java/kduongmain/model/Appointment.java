@@ -12,9 +12,14 @@ public class Appointment {
     private String type;
     private LocalDateTime  timeStart;
     private LocalDateTime  timeEnd;
+    private LocalDateTime createDate;
+    private String createdBy;
+    private LocalDateTime updateDate;
+    private String updatedBy;
     private int customerId;
     private int userId;
     private int contactId;
+    private String contactName;
 
     /** Appointment Constructor
      @param id Object id
@@ -38,6 +43,20 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+    }
+
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId, String contactName) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+        this.contactName = contactName;
     }
 
     public int getId() {
@@ -91,6 +110,37 @@ public class Appointment {
     public LocalDateTime getTimeEnd() {
         return timeEnd;
     }
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     public void setTimeEnd(LocalDateTime timeEnd) {
         this.timeEnd = timeEnd;
@@ -118,6 +168,13 @@ public class Appointment {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+    }
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
 //    /** @return the id. */
