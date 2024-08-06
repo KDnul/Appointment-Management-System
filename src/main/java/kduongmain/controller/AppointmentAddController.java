@@ -154,8 +154,6 @@ public class AppointmentAddController implements Initializable {
         } catch (Exception e) {
             System.out.println("ERROR ADDING APPOINTMENT: " + e.getMessage());
         }
-
-
     }
 
     @Override

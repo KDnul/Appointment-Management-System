@@ -76,7 +76,7 @@ public class AppointmentQuery {
     }
 
     /** Method to update the appointment database */
-    public static void updated(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end,
+    public static void update(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end,
                                Timestamp lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId, int id) {
         try {
             String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, " +
