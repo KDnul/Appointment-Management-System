@@ -14,20 +14,23 @@
       </Label>
       <HBox layoutX="417.0" layoutY="14.0" prefHeight="27.0" prefWidth="323.0">
          <children>
-            <RadioButton mnemonicParsing="false" text="Week">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
+            <RadioButton fx:id="appointmentAllRB" mnemonicParsing="false" onAction="#appointmentAllRBClicked" selected="true" text="All">
                <toggleGroup>
                   <ToggleGroup fx:id="AppointmentTG" />
-               </toggleGroup>
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="appointmentWeekRB" mnemonicParsing="false" onAction="#appointmentWeekRBClicked" text="Week" toggleGroup="$AppointmentTG">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets left="22.0" />
+               </padding>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Month" toggleGroup="$AppointmentTG">
+            <RadioButton fx:id="appointmentMonthRB" mnemonicParsing="false" onAction="#appointmentMonthRBClicked" text="Month" toggleGroup="$AppointmentTG">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" selected="true" text="All" toggleGroup="$AppointmentTG" />
          </children>
       </HBox>
       <TableView fx:id="appointmentTableView" layoutX="23.0" layoutY="59.0" prefHeight="364.0" prefWidth="908.0">

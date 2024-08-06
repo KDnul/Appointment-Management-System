@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="615.0" prefWidth="475.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.AppointmentModifyController">
+   <children>
+      <Label layoutX="148.0" layoutY="14.0" text="Modify Appointment">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="142.0" layoutY="82.0" text="ID" />
+      <TextField fx:id="modAppointmentId" disable="true" editable="false" layoutX="182.0" layoutY="78.0" text="Auto-Generated" />
+      <Label layoutX="137.0" layoutY="110.0" text="Title" />
+      <TextField fx:id="modAppointmentTitleTxt" layoutX="182.0" layoutY="106.0" />
+      <Label layoutX="99.0" layoutY="138.0" text="Description" />
+      <TextField fx:id="modAppointmentDescriptionTxt" layoutX="182.0" layoutY="134.0" />
+      <Label layoutX="114.0" layoutY="165.0" text="Location" />
+      <TextField fx:id="modAppointmentLocationTxt" layoutX="182.0" layoutY="161.0" />
+      <Label layoutX="131.0" layoutY="236.0" text="Type" />
+      <TextField fx:id="modAppointmentTypeTxt" layoutX="184.0" layoutY="232.0" />
+      <Label layoutX="89.0" layoutY="266.0" text="Start Date/Time" />
+      <DatePicker fx:id="modAppointmentStartDateDP" layoutX="184.0" layoutY="262.0" prefHeight="25.0" prefWidth="104.0" />
+      <Label layoutX="92.0" layoutY="299.0" text="End Date/Time" />
+      <DatePicker fx:id="modAppointmentEndDateDP" layoutX="184.0" layoutY="295.0" prefHeight="25.0" prefWidth="104.0" />
+      <ComboBox fx:id="modAppointmentStartTimeCB" layoutX="305.0" layoutY="262.0" prefHeight="25.0" prefWidth="110.0" />
+      <Label layoutX="123.0" layoutY="202.0" text="Contact" />
+      <ComboBox fx:id="modAppointmentContactCB" layoutX="182.0" layoutY="198.0" prefWidth="150.0" />
+      <ComboBox fx:id="modAppointmentEndTimeCB" layoutX="305.0" layoutY="295.0" prefHeight="25.0" prefWidth="110.0" />
+      <Label layoutX="98.0" layoutY="336.0" text="Customer ID" />
+      <Label layoutX="112.0" layoutY="372.0" text="User ID" />
+      <Button fx:id="modAppointmentSaveBtn" layoutX="165.0" layoutY="436.0" mnemonicParsing="false" onAction="#onModAppointmentSaveBtnClicked" prefHeight="25.0" prefWidth="54.0" text="Save" />
+      <Button fx:id="modAppointmentCancelBtn" layoutX="259.0" layoutY="436.0" mnemonicParsing="false" onAction="#onModAppointmentCancelBtnClicked" prefHeight="25.0" prefWidth="67.0" text="Cancel" />
+      <ComboBox fx:id="modAppointmentCustomerIdCB" layoutX="184.0" layoutY="332.0" prefWidth="150.0" />
+      <ComboBox fx:id="modAppointmentUserIdCB" disable="true" layoutX="184.0" layoutY="368.0" prefWidth="150.0" />
+      <Label fx:id="addAppointmentErrorLbl" layoutX="184.0" layoutY="407.0" textFill="RED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+   </children>
+</AnchorPane>

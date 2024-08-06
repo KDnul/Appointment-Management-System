@@ -19,7 +19,27 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    private String customerName;
     private String contactName;
+    private  int numAppointments;
 
     /** Appointment Constructor
      @param id Object id
@@ -57,6 +77,27 @@ public class Appointment {
         this.userId = userId;
         this.contactId = contactId;
         this.contactName = contactName;
+    }
+
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId, String customerName, String userName, String contactName) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+        this.contactName = contactName;
+        this.userName = userName;
+        this.customerName = customerName;
+    }
+
+    public Appointment(String type, int numAppointments) {
+        this.type = type;
+        this.numAppointments = numAppointments;
     }
 
     public int getId() {
@@ -175,6 +216,14 @@ public class Appointment {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
+    }
+
+    public int getNumAppointments() {
+        return numAppointments;
+    }
+
+    public void setNumAppointments(int numAppointments) {
+        this.numAppointments = numAppointments;
     }
 
 //    /** @return the id. */

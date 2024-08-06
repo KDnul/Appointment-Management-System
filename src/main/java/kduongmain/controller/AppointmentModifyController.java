@@ -1,6 +1,5 @@
 package kduongmain.controller;
 
-import helper.AppointmentQuery;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,68 +12,69 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import kduongmain.model.Appointment;
-import kduongmain.model.User;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class AppointmentAddController implements Initializable {
+public class AppointmentModifyController implements Initializable {
 
-    @FXML
-    private Button addAppointmentCancelBtn;
-
-    @FXML
-    private ComboBox<String> addAppointmentContactCB;
-
-    @FXML
-    private ComboBox<String> addAppointmentCustomerIdCB;
-
-    @FXML
-    private TextField addAppointmentDescriptionTxt;
-
-    @FXML
-    private DatePicker addAppointmentEndDateDP;
-
-    @FXML
-    private ComboBox<String> addAppointmentEndTimeCB;
-
-    @FXML
-    private TextField addAppointmentId;
-
-    @FXML
-    private TextField addAppointmentLocationTxt;
-
-    @FXML
-    private Button addAppointmentSaveBtn;
-
-    @FXML
-    private DatePicker addAppointmentStartDateDP;
-
-    @FXML
-    private ComboBox<String> addAppointmentStartTimeCB;
-
-    @FXML
-    private TextField addAppointmentTitleTxt;
-
-    @FXML
-    private TextField addAppointmentTypeTxt;
-
-    @FXML
-    private ComboBox<String> addAppointmentUserIdCB;
     @FXML
     private Label addAppointmentErrorLbl;
 
-    private int appointmentId = -1;
+    @FXML
+    private Button modAppointmentCancelBtn;
+
+    @FXML
+    private ComboBox<String> modAppointmentContactCB;
+
+    @FXML
+    private ComboBox<String> modAppointmentCustomerIdCB;
+
+    @FXML
+    private TextField modAppointmentDescriptionTxt;
+
+    @FXML
+    private DatePicker modAppointmentEndDateDP;
+
+    @FXML
+    private ComboBox<String> modAppointmentEndTimeCB;
+
+    @FXML
+    private TextField modAppointmentId;
+
+    @FXML
+    private TextField modAppointmentLocationTxt;
+
+    @FXML
+    private Button modAppointmentSaveBtn;
+
+    @FXML
+    private DatePicker modAppointmentStartDateDP;
+
+    @FXML
+    private ComboBox<String> modAppointmentStartTimeCB;
+
+    @FXML
+    private TextField modAppointmentTitleTxt;
+
+    @FXML
+    private TextField modAppointmentTypeTxt;
+
+    @FXML
+    private ComboBox<String> modAppointmentUserIdCB;
 
     Parent scene;
     Stage stage;
 
     @FXML
-    void onAddAppointmentCancelBtnClicked(ActionEvent event) throws IOException {
+    void onModAppointmentCancelBtnClicked(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -88,74 +88,23 @@ public class AppointmentAddController implements Initializable {
     }
 
     @FXML
-    void onAddAppointmentSaveBtnClicked(ActionEvent event) throws SQLException {
-        String title = addAppointmentTitleTxt.getText();
-        String description = addAppointmentDescriptionTxt.getText();
-        String location = addAppointmentLocationTxt.getText();
-        String type = addAppointmentTypeTxt.getText();
-        String contact = addAppointmentContactCB.getValue();
-        LocalDate startDate = addAppointmentStartDateDP.getValue();
-        LocalTime startTime = LocalTime.parse(addAppointmentStartTimeCB.getValue());
-        LocalDate endDate = addAppointmentEndDateDP.getValue();
-        LocalTime endTime = LocalTime.parse(addAppointmentEndTimeCB.getValue());
-        String user = addAppointmentUserIdCB.getValue();
-        String customer = addAppointmentCustomerIdCB.getValue();
+    void onModAppointmentSaveBtnClicked(ActionEvent event) {
 
-        LocalDateTime appointmentStart = LocalDateTime.of(addAppointmentStartDateDP.getValue(), LocalTime.parse(addAppointmentStartTimeCB.getValue()));
-        LocalDateTime appointmentEnd = LocalDateTime.of(addAppointmentEndDateDP.getValue(), LocalTime.parse(addAppointmentEndTimeCB.getValue()));
+    }
 
-        int userId = getUserIdByName(user);
-        int customerId = getCustomerIdByName(customer);
-        int contactId = getContactIdByName(contact);
-
-
-        // Convert local times to UTC Instant objects
-        Instant startDateTimeInstant = ZonedDateTime.of(startDate, startTime, ZoneId.systemDefault()).toInstant();
-        Instant endDateTimeInstant = ZonedDateTime.of(endDate, endTime, ZoneId.systemDefault()).toInstant();
-
-        // Convert Instant objects to strings without "T" and "Z"
-        String startDateTimeUTCString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(startDateTimeInstant.atZone(ZoneOffset.UTC));
-        String endDateTimeUTCString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(endDateTimeInstant.atZone(ZoneOffset.UTC));
-
-        try {
-            if(title.isEmpty() || description.isEmpty() || location.isEmpty() || type.isEmpty() || startDate == null || endDate == null || user.isEmpty() || customer.isEmpty() || contact == null) {
-                addAppointmentErrorLbl.setText("Please fill out all required fields.");
-            }else if (!isInBusinessHours(startDate, startTime, endDate, endTime)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Warning Dialog");
-                alert.setContentText("ERROR: Your appointment must be within business hours from 8:00 a.m to 10:00 p.m ET, including weekends.");
-                alert.showAndWait();
-
-            }else if (isOverlapping(customerId, startDateTimeUTCString, endDateTimeUTCString)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Warning Dialog");
-                alert.setContentText("ERROR: Appointment overlaps with existing appointments for this customer.");
-                alert.showAndWait();
-            } else {
-                // Generate Timestamp
-                LocalDateTime currentTime = LocalDateTime.now();
-                ZoneId utcZone = ZoneId.of("UTC");
-                ZonedDateTime utcTime = ZonedDateTime.of(currentTime, utcZone);
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                Timestamp timestamp = Timestamp.valueOf(utcTime.format(formatter));
-
-                // Get the logged-in username
-                String createdBy = LoginController.getCurrentUserName();
-
-                AppointmentQuery.add(title, description, location, type, appointmentStart, appointmentEnd,LocalDateTime.now(), createdBy, timestamp, createdBy, customerId,userId,contactId);
-
-                // Return to Customer View Page
-                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/AppointmentView.fxml"))));
-                stage.setScene(new Scene(scene));
-                stage.show();
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR ADDING APPOINTMENT: " + e.getMessage());
-        }
-
-
+    public void sendAppointment(Appointment appointment) {
+        modAppointmentId.setText(String.valueOf(appointment.getId()));
+        modAppointmentTitleTxt.setText(appointment.getTitle());
+        modAppointmentDescriptionTxt.setText(appointment.getDescription());
+        modAppointmentLocationTxt.setText(appointment.getLocation());
+        modAppointmentContactCB.setValue(appointment.getContactName());
+        modAppointmentTypeTxt.setText(appointment.getType());
+        modAppointmentStartDateDP.setValue(appointment.getTimeStart().toLocalDate());
+        modAppointmentStartTimeCB.setValue(String.valueOf(appointment.getTimeStart().toLocalTime()));
+        modAppointmentEndDateDP.setValue(appointment.getTimeEnd().toLocalDate());
+        modAppointmentEndTimeCB.setValue(String.valueOf(appointment.getTimeEnd().toLocalTime()));
+        modAppointmentCustomerIdCB.setValue(appointment.getCustomerName());
+        modAppointmentUserIdCB.setValue(appointment.getUserName());
     }
 
     @Override
@@ -167,12 +116,11 @@ public class AppointmentAddController implements Initializable {
             populateCustomerCB();
             populateContactCB();
 
-            addAppointmentUserIdCB.setValue(LoginController.getCurrentUserName());
+            modAppointmentUserIdCB.setValue(LoginController.getCurrentUserName());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
     /**
      * Populate options for start times in the combo box.
      */
@@ -181,14 +129,14 @@ public class AppointmentAddController implements Initializable {
             for (int minute = 0; minute < 60; minute += 30) {
                 String hourStr = String.format("%02d", hour);
                 String minuteStr = String.format("%02d", minute);
-                addAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
+                modAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
             }
         }
         for (int hour = 0; hour <= 11; hour++) {
             for (int minute = 0; minute < 60; minute += 30) {
                 String hourStr = String.format("%02d", hour + 12); // Convert to PM
                 String minuteStr = String.format("%02d", minute);
-                addAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
+                modAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
             }
         }
     }
@@ -201,14 +149,14 @@ public class AppointmentAddController implements Initializable {
             for (int minute = 0; minute < 60; minute += 30) {
                 String hourStr = String.format("%02d", hour);
                 String minuteStr = String.format("%02d", minute);
-                addAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
+                modAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
             }
         }
         for (int hour = 0; hour <= 11; hour++) {
             for (int minute = 0; minute < 60; minute += 30) {
                 String hourStr = String.format("%02d", hour + 12); // Convert to PM
                 String minuteStr = String.format("%02d", minute);
-                addAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
+                modAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
             }
         }
 
@@ -224,7 +172,7 @@ public class AppointmentAddController implements Initializable {
             while (rs.next()) {
                 contacts.add(rs.getString("Contact_Name"));
             }
-            addAppointmentContactCB.getItems().addAll(contacts);
+            modAppointmentContactCB.getItems().addAll(contacts);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -242,7 +190,7 @@ public class AppointmentAddController implements Initializable {
             while (rs.next()) {
                 users.add(rs.getString("User_Name"));
             }
-            addAppointmentUserIdCB.getItems().addAll(users);
+            modAppointmentUserIdCB.getItems().addAll(users);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -263,7 +211,7 @@ public class AppointmentAddController implements Initializable {
             throw new RuntimeException(e);
         }
 
-        addAppointmentCustomerIdCB.getItems().addAll(customers);
+        modAppointmentCustomerIdCB.getItems().addAll(customers);
     }
 
     /** Gets user id by username. */
@@ -350,7 +298,7 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
-    /** Methos to check if start and end times are within the business hours of the business. */
+    /** Method to check if start and end times are within the business hours of the business. */
     private boolean isInBusinessHours(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         ZonedDateTime startDateTime = ZonedDateTime.of(startDate, startTime, ZoneId.systemDefault());
         ZonedDateTime endDateTime = ZonedDateTime.of(endDate, endTime, ZoneId.systemDefault());
@@ -374,5 +322,4 @@ public class AppointmentAddController implements Initializable {
         }
         return false;
     }
-
 }
