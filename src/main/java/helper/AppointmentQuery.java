@@ -277,5 +277,4 @@ public class AppointmentQuery {
         return contactAppointment;
     }
 
-
 }

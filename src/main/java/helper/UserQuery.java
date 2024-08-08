@@ -65,4 +65,21 @@ public class UserQuery extends  User{
         return -1;
     }
 
+    public static int getUserIdByName(String username) throws SQLException {
+        int userId = -1; //Default value
+
+        String sql = "SELECT User_ID FROM USERS WHERE User_Name = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setString(1, username);
+
+        ResultSet rs = ps.executeQuery();
+
+        // Check if user ID Exists
+        if(rs.next()) {
+            userId = rs.getInt("User_ID");
+        }
+
+        return userId;
+    }
+
 }

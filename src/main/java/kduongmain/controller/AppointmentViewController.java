@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentViewController implements Initializable {
@@ -135,6 +136,38 @@ public class AppointmentViewController implements Initializable {
             System.out.println("ERROR MODIFYING CUSTOMER: " + e.getMessage());
         }
 
+    }
+
+    @FXML
+    void onAppointmentDelBtn(ActionEvent event) {
+        try {
+            Appointment appointment = appointmentTableView.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete appointment ID: " + appointment.getId() + " of type: " + appointment.getType() + "\nAppointment will be removed from the table.");
+            if (appointmentTableView.getSelectionModel().getSelectedIndex() == -1) {
+                throw new Exception("Please select an appointment to delete");
+            }
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+                AppointmentQuery.delete(appointment.getId());
+                if(appointmentAllRB.isSelected()) {
+                    appointmentTableView.setItems(AppointmentQuery.getAllAppointments());
+                    appointmentTableView.refresh();
+                } else if (appointmentWeekRB.isSelected()) {
+                    appointmentTableView.setItems(AppointmentQuery.getWeeklyAppointments());
+                    appointmentTableView.refresh();
+                } else if (appointmentMonthRB.isSelected()) {
+                    appointmentTableView.setItems(AppointmentQuery.getMonthlyAppointments());
+                    appointmentTableView.refresh();
+                }
+                System.out.print("DELETING PART: " + appointment);
+            }
+        }catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Deleting Appointment");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

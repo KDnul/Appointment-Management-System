@@ -99,7 +99,7 @@ public class CustomerViewController implements Initializable {
                 CustomerQuery.delete(customer.getId());
                 customerTableVIew.setItems(CustomerQuery.getAllCustomers());
                 customerTableVIew.refresh();
-                System.out.print("DELETING PART: " + customer);
+                System.out.print("DELETING Customer: " + customer);
             }
 
         } catch(Exception e) {

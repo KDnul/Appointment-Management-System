@@ -50,6 +50,6 @@
       <Button fx:id="appointmentAddBtn" layoutX="273.0" layoutY="423.0" mnemonicParsing="false" onAction="#onAppointmentAddBtnClicked" text="Add Appointment" />
       <Button fx:id="appointmentModifyBtn" layoutX="405.0" layoutY="423.0" mnemonicParsing="false" onAction="#onAppointmentModifyBtnClicked" text="Modify Appointment" />
       <Button fx:id="appointmentBackBtn" layoutX="843.0" layoutY="448.0" mnemonicParsing="false" onAction="#onAppointmentBackBtnClicked" prefHeight="25.0" prefWidth="81.0" text="Back" />
-      <Button layoutX="557.0" layoutY="423.0" mnemonicParsing="false" text="Delete Appointment" />
+      <Button fx:id="appointmentDelBtn" layoutX="557.0" layoutY="423.0" mnemonicParsing="false" onAction="#onAppointmentDelBtn" text="Delete Appointment" />
    </children>
 </AnchorPane>

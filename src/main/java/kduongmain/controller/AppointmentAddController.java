@@ -40,7 +40,7 @@ public class AppointmentAddController implements Initializable {
     private DatePicker addAppointmentEndDateDP;
 
     @FXML
-    private ComboBox<String> addAppointmentEndTimeCB;
+    private ComboBox<LocalTime> addAppointmentEndTimeCB;
 
     @FXML
     private TextField addAppointmentId;
@@ -55,7 +55,7 @@ public class AppointmentAddController implements Initializable {
     private DatePicker addAppointmentStartDateDP;
 
     @FXML
-    private ComboBox<String> addAppointmentStartTimeCB;
+    private ComboBox<LocalTime> addAppointmentStartTimeCB;
 
     @FXML
     private TextField addAppointmentTitleTxt;
@@ -95,38 +95,31 @@ public class AppointmentAddController implements Initializable {
         String type = addAppointmentTypeTxt.getText();
         String contact = addAppointmentContactCB.getValue();
         LocalDate startDate = addAppointmentStartDateDP.getValue();
-        LocalTime startTime = LocalTime.parse(addAppointmentStartTimeCB.getValue());
+        LocalTime startTime = addAppointmentStartTimeCB.getValue();
         LocalDate endDate = addAppointmentEndDateDP.getValue();
-        LocalTime endTime = LocalTime.parse(addAppointmentEndTimeCB.getValue());
+        LocalTime endTime = addAppointmentEndTimeCB.getValue();
         String user = addAppointmentUserIdCB.getValue();
         String customer = addAppointmentCustomerIdCB.getValue();
-
-        LocalDateTime appointmentStart = LocalDateTime.of(addAppointmentStartDateDP.getValue(), LocalTime.parse(addAppointmentStartTimeCB.getValue()));
-        LocalDateTime appointmentEnd = LocalDateTime.of(addAppointmentEndDateDP.getValue(), LocalTime.parse(addAppointmentEndTimeCB.getValue()));
 
         int userId = getUserIdByName(user);
         int customerId = getCustomerIdByName(customer);
         int contactId = getContactIdByName(contact);
 
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 
-        // Convert local times to UTC Instant objects
-        Instant startDateTimeInstant = ZonedDateTime.of(startDate, startTime, ZoneId.systemDefault()).toInstant();
-        Instant endDateTimeInstant = ZonedDateTime.of(endDate, endTime, ZoneId.systemDefault()).toInstant();
-
-        // Convert Instant objects to strings without "T" and "Z"
-        String startDateTimeUTCString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(startDateTimeInstant.atZone(ZoneOffset.UTC));
-        String endDateTimeUTCString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(endDateTimeInstant.atZone(ZoneOffset.UTC));
+        System.out.println("TIMESTAMP OF START DATE TIME IN PST: " + Timestamp.valueOf(startDateTime));
 
         try {
             if(title.isEmpty() || description.isEmpty() || location.isEmpty() || type.isEmpty() || startDate == null || endDate == null || user.isEmpty() || customer.isEmpty() || contact == null) {
                 addAppointmentErrorLbl.setText("Please fill out all required fields.");
-            }else if (!isInBusinessHours(startDate, startTime, endDate, endTime)) {
+            }else if (!isInBusinessHours(startDateTime, endDateTime)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Warning Dialog");
                 alert.setContentText("ERROR: Your appointment must be within business hours from 8:00 a.m to 10:00 p.m ET, including weekends.");
                 alert.showAndWait();
 
-            }else if (isOverlapping(customerId, startDateTimeUTCString, endDateTimeUTCString)) {
+            }else if (isOverlapping(customerId, Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime))) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Warning Dialog");
                 alert.setContentText("ERROR: Appointment overlaps with existing appointments for this customer.");
@@ -143,7 +136,7 @@ public class AppointmentAddController implements Initializable {
                 // Get the logged-in username
                 String createdBy = LoginController.getCurrentUserName();
 
-                AppointmentQuery.add(title, description, location, type, appointmentStart, appointmentEnd,LocalDateTime.now(), createdBy, timestamp, createdBy, customerId,userId,contactId);
+                AppointmentQuery.add(title, description, location, type, startDateTime, endDateTime,LocalDateTime.now(), createdBy, timestamp, createdBy, customerId,userId,contactId);
 
                 // Return to Customer View Page
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -159,11 +152,14 @@ public class AppointmentAddController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            populateEndTimeCB();
-            populateStartTimeCB();
+            addAppointmentEndTimeCB.setItems(getTime());
+            addAppointmentStartTimeCB.setItems(getTime());
             populateUserCB();
             populateCustomerCB();
             populateContactCB();
+
+            addAppointmentStartDateDP.valueProperty().addListener((ov, oldValueDate, newValueDate) -> addAppointmentEndDateDP.setValue(newValueDate.plusDays(0)));
+            addAppointmentStartTimeCB.valueProperty().addListener((ov1, oldValueTime, newValueTime) -> addAppointmentEndTimeCB.setValue(newValueTime.plusMinutes(15)));
 
             addAppointmentUserIdCB.setValue(LoginController.getCurrentUserName());
         } catch (SQLException e) {
@@ -171,45 +167,17 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
-    /**
-     * Populate options for start times in the combo box.
-     */
-    private void populateStartTimeCB() {
-        for (int hour = 0; hour <= 11; hour++) {
-            for (int minute = 0; minute < 60; minute += 30) {
-                String hourStr = String.format("%02d", hour);
-                String minuteStr = String.format("%02d", minute);
-                addAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
-            }
-        }
-        for (int hour = 0; hour <= 11; hour++) {
-            for (int minute = 0; minute < 60; minute += 30) {
-                String hourStr = String.format("%02d", hour + 12); // Convert to PM
-                String minuteStr = String.format("%02d", minute);
-                addAppointmentStartTimeCB.getItems().add(hourStr + ":" + minuteStr);
-            }
-        }
-    }
+    /** Populates the time Combo Box. */
+    public static ObservableList<LocalTime> getTime() {
+        ObservableList<LocalTime> appointmentTimeList = FXCollections.observableArrayList();
+        LocalTime start = LocalTime.of(1, 00);
+        LocalTime end = LocalTime.MIDNIGHT.minusHours(1);
 
-    /**
-     * Populate options for end times in the combo box.
-     */
-    private void populateEndTimeCB() {
-        for (int hour = 0; hour <= 11; hour++) {
-            for (int minute = 0; minute < 60; minute += 30) {
-                String hourStr = String.format("%02d", hour);
-                String minuteStr = String.format("%02d", minute);
-                addAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
-            }
+        while (start.isBefore(end.plusSeconds(2))) {
+            appointmentTimeList.add(start);
+            start = start.plusMinutes(15);
         }
-        for (int hour = 0; hour <= 11; hour++) {
-            for (int minute = 0; minute < 60; minute += 30) {
-                String hourStr = String.format("%02d", hour + 12); // Convert to PM
-                String minuteStr = String.format("%02d", minute);
-                addAppointmentEndTimeCB.getItems().add(hourStr + ":" + minuteStr);
-            }
-        }
-
+        return appointmentTimeList;
     }
 
     /** Populates the contact combo box. */
@@ -310,13 +278,13 @@ public class AppointmentAddController implements Initializable {
     }
 
     /** Method to check it appointments overlaps with existing appointments for customer */
-    private boolean isOverlapping(int customerId, String startString, String endString) {
+    private boolean isOverlapping(int customerId, Timestamp startTime, Timestamp endTime) {
         try {
             System.out.println("Checking for overlapping appointments");
 
             System.out.println("isAppointmentOverLapping - customerId: " + customerId);
-            System.out.println("isAppointmentOverLapping - start: " + startString);
-            System.out.println("isAppointmentOverLapping - end: " + endString);
+            System.out.println("isAppointmentOverLapping - start: " + startTime);
+            System.out.println("isAppointmentOverLapping - end: " + endTime);
 
             // Query to retrieve existing appointments for the customer that overlap with the new appointment
             String sql = "SELECT COUNT(*) FROM Appointments WHERE Customer_ID = ? " +
@@ -324,12 +292,12 @@ public class AppointmentAddController implements Initializable {
 
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, customerId);
-            ps.setString(2, startString);
-            ps.setString(3, startString);
-            ps.setString(4, endString);
-            ps.setString(5, endString);
-            ps.setString(6, startString);
-            ps.setString(7, endString);
+            ps.setTimestamp(2, Timestamp.valueOf(startTime.toLocalDateTime()));
+            ps.setTimestamp(3, Timestamp.valueOf(startTime.toLocalDateTime()));
+            ps.setTimestamp(4, Timestamp.valueOf(endTime.toLocalDateTime()));
+            ps.setTimestamp(5, Timestamp.valueOf(endTime.toLocalDateTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(startTime.toLocalDateTime()));
+            ps.setTimestamp(7, Timestamp.valueOf(endTime.toLocalDateTime()));
 
             ResultSet rs = ps.executeQuery();
 
@@ -348,29 +316,39 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
-    /** Methos to check if start and end times are within the business hours of the business. */
-    private boolean isInBusinessHours(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        ZonedDateTime startDateTime = ZonedDateTime.of(startDate, startTime, ZoneId.systemDefault());
-        ZonedDateTime endDateTime = ZonedDateTime.of(endDate, endTime, ZoneId.systemDefault());
+    /** Method to check if start and end times are within the business hours of the business. */
+    private boolean isInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
-        // Check if day falls within Monday to Friday
-        if (startDateTime.getDayOfWeek().getValue() >= DayOfWeek.MONDAY.getValue() &&
-                startDateTime.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()) {
-            // Check if appointment start and end time are within business hours (8:00 a.m. to 10:00 p.m. ET)
-            if (startDateTime.getHour() >= 8 && startDateTime.getHour() < 22 &&
-                    endDateTime.getHour() >= 8 && endDateTime.getHour() < 22) {
-                return true;
-            }
-        } else {
-            // Check if appointment start and end time are within business hours (8:00 a.m. to 10:00 p.m. ET) on weekends
-            if ((startDateTime.getDayOfWeek().getValue() == DayOfWeek.SATURDAY.getValue() ||
-                    startDateTime.getDayOfWeek().getValue() == DayOfWeek.SUNDAY.getValue()) &&
-                    startDateTime.getHour() >= 8 && startDateTime.getHour() < 22 &&
-                    endDateTime.getHour() >= 8 && endDateTime.getHour() < 22) {
-                return true;
-            }
-        }
-        return false;
+        // Define business hours in ET
+        ZoneId businessZone = ZoneId.of("America/New_York");
+        // Business start and end time in ET
+        LocalTime businessStart = LocalTime.of(8, 0);
+        LocalTime businessEnd = LocalTime.of(22, 0);
+
+        System.out.println("BUSINESS START TIME: " + businessStart);
+        System.out.println("BUSINESS END TIME: " + businessEnd);
+
+        // Get user's local time zone
+        ZoneId userTimeZone = ZoneId.systemDefault();
+
+        // Convert business hours to user's local time zone
+        // Create ZonedDateTime for business hours in ET
+        ZonedDateTime businessStartTimeET = ZonedDateTime.of(LocalDate.now(), businessStart, businessZone);
+        ZonedDateTime businessEndTimeET = ZonedDateTime.of(LocalDate.now(), businessEnd, businessZone);
+
+        // Convert to user's local time zone
+        LocalTime businessStartTimeLocal = businessStartTimeET.withZoneSameInstant(userTimeZone).toLocalTime();
+        LocalTime businessEndTimeLocal = businessEndTimeET.withZoneSameInstant(userTimeZone).toLocalTime();
+
+        // Extract the LocalTime components from the appointment times
+        LocalTime apptStartTime = startDateTime.toLocalTime();
+        LocalTime apptEndTime = endDateTime.toLocalTime();
+
+        // Check if appointment times are within business hours
+        boolean startsWithinBusinessHours = !apptStartTime.isBefore(businessStartTimeLocal) && !apptStartTime.isAfter(businessEndTimeLocal);
+        boolean endsWithinBusinessHours = !apptEndTime.isBefore(businessStartTimeLocal) && !apptEndTime.isAfter(businessEndTimeLocal);
+
+        return startsWithinBusinessHours && endsWithinBusinessHours;
     }
 
 }
