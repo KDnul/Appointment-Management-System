@@ -12,6 +12,7 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
+    private int typeTotal;
     private LocalDateTime  timeStart;
     private LocalDateTime  timeEnd;
     private LocalDateTime createDate;
@@ -97,9 +98,9 @@ public class Appointment {
         this.customerName = customerName;
     }
 
-    public Appointment(String type, int numAppointments) {
+    public Appointment(String type, int typeTotal) {
         this.type = type;
-        this.numAppointments = numAppointments;
+        this.typeTotal = typeTotal;
     }
 
     public int getId() {
@@ -140,6 +141,13 @@ public class Appointment {
 
     public void setType(String type) {
         this.type = type;
+    }
+    public int getTypeTotal() {
+        return typeTotal;
+    }
+
+    public void setTypeTotal(int typeTotal) {
+        this.typeTotal = typeTotal;
     }
 
     public LocalDateTime getTimeStart() {

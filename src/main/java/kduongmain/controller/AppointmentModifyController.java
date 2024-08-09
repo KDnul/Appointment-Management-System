@@ -175,6 +175,10 @@ public class AppointmentModifyController implements Initializable {
             populateCustomerCB();
             populateContactCB();
 
+            // Lambda Expressions
+            modAppointmentStartDateDP.valueProperty().addListener((ov, oldValueDate, newValueDate) -> modAppointmentEndDateDP.setValue(newValueDate.plusDays(0)));
+            modAppointmentStartTimeCB.valueProperty().addListener((ov1, oldValueTime, newValueTime) -> modAppointmentEndTimeCB.setValue(newValueTime.plusMinutes(15)));
+
             modAppointmentUserIdCB.setValue(LoginController.getCurrentUserName());
         } catch (SQLException e) {
             throw new RuntimeException(e);

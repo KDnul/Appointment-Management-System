@@ -158,6 +158,7 @@ public class AppointmentAddController implements Initializable {
             populateCustomerCB();
             populateContactCB();
 
+            // Lambda Expressions
             addAppointmentStartDateDP.valueProperty().addListener((ov, oldValueDate, newValueDate) -> addAppointmentEndDateDP.setValue(newValueDate.plusDays(0)));
             addAppointmentStartTimeCB.valueProperty().addListener((ov1, oldValueTime, newValueTime) -> addAppointmentEndTimeCB.setValue(newValueTime.plusMinutes(15)));
 

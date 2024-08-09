@@ -2,79 +2,86 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.c195.c195.controller.AppointmentsAdd">
+<AnchorPane prefHeight="400.0" prefWidth="900.0" style="-fx-background-color: #f4e500; -fx-border-color: #000000; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.helloworldjfxtemplate.controller.ReportsController">
     <children>
-        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
-            <children>
-                <AnchorPane layoutX="-30.0" layoutY="2.0" prefHeight="608.0" prefWidth="600.0">
-                    <children>
-                        <GridPane layoutX="173.0" layoutY="63.0" prefHeight="281.0" prefWidth="298.0">
-                            <columnConstraints>
-                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="103.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="9.0" prefWidth="10.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="189.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
+        <TabPane layoutY="50.0" prefHeight="303.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="appointTotalTab" text="Appointment Totals">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Appointment ID:" textAlignment="RIGHT" />
-                                <Label text="Title:" GridPane.rowIndex="1" />
-                                <Label text="Description:" GridPane.rowIndex="2" />
-                                <Label text="Location:" GridPane.rowIndex="3" />
-                                <Label text="Type:" GridPane.rowIndex="4" />
-                                <Label text="Contact" GridPane.rowIndex="5" />
-                                <TextField fx:id="appointmentIDTextField" disable="true" prefHeight="26.0" prefWidth="127.0" text="Disabled - auto-generated" GridPane.columnIndex="2">
-                                    <font>
-                                        <Font name="System Bold" size="12.218181610107422" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="appointTitleTextField" prefHeight="26.0" prefWidth="151.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                <TextField fx:id="appointDescriptionTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                <TextField fx:id="appointLocationTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                <TextField fx:id="appointTypeTextField" prefHeight="26.0" prefWidth="209.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                <ComboBox fx:id="contactComboAdd" prefHeight="26.0" prefWidth="179.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                <TableView fx:id="appTypeTableView" layoutX="51.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointType" prefWidth="159.0" text="Appointment Type" />
+                                        <TableColumn fx:id="appointTypeTotal" prefWidth="165.0" text="Total" />
+                                    </columns>
+                                </TableView>
+                                <TableView fx:id="appMonthTableView" layoutX="525.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointMonth" prefWidth="162.0" text="Appointment By Month" />
+                                        <TableColumn fx:id="appointMonthTotal" prefWidth="162.0" text="Total" />
+                                    </columns>
+                                </TableView>
                             </children>
-                        </GridPane>
-                        <Label layoutX="246.0" layoutY="24.0" text="Add New Appointment">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        <Button fx:id="saveButton" layoutX="214.0" layoutY="541.0" mnemonicParsing="false" onAction="#actionSaveButton" prefWidth="75.0" text="Save" />
-                        <Button fx:id="cancelButton" layoutX="365.0" layoutY="542.0" mnemonicParsing="false" onAction="#actionCancelButton" prefWidth="75.0" text="Cancel" />
-                        <DatePicker fx:id="startDatePickerAdd" layoutX="283.0" layoutY="352.0" prefHeight="26.0" prefWidth="119.0" />
-                        <Label layoutX="189.0" layoutY="356.0" text="Start Date/Time" />
-                        <ComboBox fx:id="startTimeComboAdd" layoutX="419.0" layoutY="352.0" prefHeight="26.0" prefWidth="75.0" />
-                        <Label layoutX="191.0" layoutY="403.0" text="End Date/Time" />
-                        <DatePicker fx:id="endDatePickerAdd" layoutX="283.0" layoutY="398.0" prefHeight="26.0" prefWidth="119.0" />
-                        <ComboBox fx:id="endTimeComboAdd" layoutX="419.0" layoutY="398.0" prefHeight="26.0" prefWidth="75.0" />
-                        <ComboBox fx:id="userComboAdd" layoutX="283.0" layoutY="443.0" prefHeight="26.0" prefWidth="180.0" />
-                        <ComboBox fx:id="customerComboAdd" layoutX="283.0" layoutY="487.0" prefHeight="26.0" prefWidth="180.0" />
-                        <Label layoutX="230.0" layoutY="447.0" text="User ID:" />
-                        <Label layoutX="201.0" layoutY="491.0" text="Customer ID: " />
-                        <Label fx:id="errorMessageLabel" layoutX="246.0" layoutY="44.0" textFill="RED">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="contScheduleTab" text="Contact Schedule">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="14.0" layoutY="14.0" text="Select a Contact:" />
+                                <ComboBox fx:id="cb_contact" layoutX="121.0" layoutY="10.0" onAction="#setCb_contPopulate" prefWidth="150.0" />
+                                <TableView fx:id="contAppTableView" layoutY="40.0" prefHeight="227.0" prefWidth="900.0">
+                                    <columns>
+                                        <TableColumn fx:id="col_appointID" prefWidth="100.0" text="Appointment ID" />
+                                        <TableColumn fx:id="col_appointTitle" prefWidth="100.0" text="Title" />
+                                        <TableColumn fx:id="col_appointDesc" prefWidth="100.0" text="Description" />
+                                        <TableColumn fx:id="col_appointCont" prefWidth="100.0" text="Contact" />
+                                        <TableColumn fx:id="col_appointType" prefWidth="100.0" text="Type" />
+                                        <TableColumn fx:id="col_appointStartDate" prefWidth="100.0" text="Start date / Time" />
+                                        <TableColumn fx:id="col_appointEndDate" prefWidth="100.0" text="End date / Time" />
+                                        <TableColumn fx:id="col_custID" prefWidth="100.0" text="Customer ID" />
+                                        <TableColumn fx:id="col_userID" prefWidth="100.0" text="User ID" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="appointCountryTab" text="Customer Total By Country">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="countryTableView" layoutX="65.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointCountry" prefWidth="159.0" text="Country" />
+                                        <TableColumn fx:id="appointCountryTotal" prefWidth="165.0" text="Customer Total" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        <Button fx:id="btn_menu" layoutX="804.0" layoutY="361.0" mnemonicParsing="false" onAction="#setBtn_menu" style="-fx-background-color: #0800a1; -fx-cursor: hand;" text="TO MENU" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Label layoutX="32.0" layoutY="14.0" text="REPORTS" textFill="#0800a1" underline="true">
+            <font>
+                <Font name="System Bold Italic" size="18.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>
