@@ -23,12 +23,8 @@ public class MainApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         JDBC.openConnection();
-        // display timezones
-//        ZoneId.getAvailableZoneIds().stream().sorted().forEach(System.out::println);
-        // Filter timezones
-//        ZoneId.getAvailableZoneIds().stream().filter(z->z.contains("America")).sorted().forEach(System.out::println);
 
         LocalDate myLd = LocalDate.now();
         LocalTime myLt = LocalTime.now();
@@ -39,11 +35,6 @@ public class MainApplication extends Application {
         LocalDateTime myLtd = LocalDateTime.of(myLd, myLt);
         ZoneId myZoneId = ZoneId.systemDefault();
         ZonedDateTime myZdt = ZonedDateTime.of(myLtd, myZoneId);
-//        System.out.println(myZdt);
-
-//        System.out.println(myZdt.toLocalDate());
-//        System.out.println(myZdt.toLocalTime());
-//        System.out.println(myZdt.toLocalDate().toString() + " " + myZdt.toLocalTime().toString());
 
         System.out.println("User Time: " + myZdt);
 
@@ -53,9 +44,6 @@ public class MainApplication extends Application {
 
         myZdt = ZonedDateTime.ofInstant(utcZdt.toInstant(), utcZoneId);
         System.out.println("UTC to User Time: " + myZdt);
-
-
-//        CountryQuery.select();
 
         launch();
         JDBC.closeConnection();

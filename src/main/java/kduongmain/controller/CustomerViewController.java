@@ -1,8 +1,7 @@
 package kduongmain.controller;
 
+import helper.AppointmentQuery;
 import helper.CustomerQuery;
-import helper.JDBC;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,16 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import kduongmain.MainApplication;
+import kduongmain.model.Appointment;
 import kduongmain.model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
@@ -66,6 +62,7 @@ public class CustomerViewController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /** Action event for when the customer add button is clicked. Brings uer to the customer add form FXML. */
     @FXML
     void onCustomerAddBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -76,6 +73,7 @@ public class CustomerViewController implements Initializable {
 
     }
 
+    /** Action to bring the user back to the main menu. */
     @FXML
     void onCustomerBackBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -85,33 +83,78 @@ public class CustomerViewController implements Initializable {
 
     }
 
+    /** Action for when deleting a selected customer. First removes all associated appointments from the selected customer before deleting the customer. If no associated appointments are found
+     * , then delete the customer by themselves. */
     @FXML
     void onCustomerDelBtnClicked(ActionEvent event) {
         try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete customer?\nCustomer will be removed from the table.");
-            if(customerTableVIew.getSelectionModel().getSelectedIndex() == -1) {
-                throw new Exception("Please select a Customer to delete");
+            int delCount = 0;
+            ObservableList<Customer> custList = CustomerQuery.getAllCustomers();
+            ObservableList<Appointment> appointList = AppointmentQuery.getAllAppointments();
+            Customer c = customerTableVIew.getSelectionModel().getSelectedItem();
+            //If no customer selected -> get an error
+            if (c == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("NoSelection");
+                alert.setContentText("Please select item to continue.");
+                alert.showAndWait();
             }
-            Customer customer = customerTableVIew.getSelectionModel().getSelectedItem();
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK) {
-                CustomerQuery.delete(customer.getId());
-                customerTableVIew.setItems(CustomerQuery.getAllCustomers());
-                customerTableVIew.refresh();
-                System.out.print("DELETING Customer: " + customer);
+            int selectCust = customerTableVIew.getSelectionModel().getSelectedItem().getId();
+            for (Appointment a : appointList) {
+                int appointCustID = a.getCustomerId();
+                if (appointCustID == selectCust) {
+                    delCount++;
+                }
+            }
+            //if selected customer has appointments, we remove all associated appointments first, and after the customer
+            if (delCount > 0) {
+                Alert assocAppoint = new Alert(Alert.AlertType.WARNING);
+                assocAppoint.setTitle("Alert");
+                assocAppoint.setContentText("Specific customer has " + delCount + " associated appointments." +
+                        "Pressing OK will delete BOTH customer and associated appointments.");
+                assocAppoint.getButtonTypes().clear();
+                assocAppoint.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+                assocAppoint.showAndWait();
+                if (assocAppoint.getResult() == ButtonType.OK) {
+                    for (Appointment a : appointList) {
+                        if (a.getCustomerId() == selectCust) {
+                            AppointmentQuery.delete(a.getId());
+                        }
+                    }
+                    CustomerQuery.delete(customerTableVIew.getSelectionModel().getSelectedItem().getId());
+                    custList = CustomerQuery.getAllCustomers();
+                    customerTableVIew.setItems(custList);
+                    customerTableVIew.refresh();
+                } else if (assocAppoint.getResult() == ButtonType.CANCEL) {
+                    assocAppoint.close();
+                }
             }
 
-        } catch(Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Deleting Part");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            //if selected customer has no appointments, we remove the customer
+            if (delCount == 0) {
+                Alert confDelete = new Alert(Alert.AlertType.WARNING);
+                confDelete.setTitle("Alert");
+                confDelete.setContentText("Are you sure you want to remove customer?");
+                confDelete.getButtonTypes().clear();
+                confDelete.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+                confDelete.showAndWait();
+                if (confDelete.getResult() == ButtonType.OK) {
+                    CustomerQuery.delete(customerTableVIew.getSelectionModel().getSelectedItem().getId());
+                    custList = CustomerQuery.getAllCustomers();
+                    customerTableVIew.setItems(custList);
+                    customerTableVIew.refresh();
+                } else if (confDelete.getResult() == ButtonType.CANCEL) {
+                    confDelete.close();
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
-    @FXML
+    /** Action for when the customer modification button is clicked. Brings user to modify selected customer. */
+   @FXML
     void onCustomerModBtnClicked(ActionEvent event) {
         try {
             // Goes to modify customer fxml
@@ -136,6 +179,7 @@ public class CustomerViewController implements Initializable {
 
     }
 
+    /** Initial setup for when loading the Customer View FXML. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Customers View Table
@@ -153,28 +197,4 @@ public class CustomerViewController implements Initializable {
         }
 
     }
-
-//    private void populateCustomerTable() throws SQLException {
-//        String sql = "SELECT c.customer_id, c.customer_name, c.phone, c.address, c.postal_code, d.division, co.country " +
-//                "FROM customers c " +
-//                "JOIN first_level_divisions d ON c.division_id = d.division_id " +
-//                "JOIN countries co ON d.country_id = co.country_id";
-//
-//        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-//        ResultSet rs = ps.executeQuery();
-//
-//        while (rs.next()) {
-//            Customer customer = new Customer(
-//                    rs.getInt("Customer_ID"),
-//                    rs.getString("Customer_Name"),
-//                    rs.getString("Address"),
-//                    rs.getString("Postal_Code"),
-//                    rs.getString("Phone"),
-//                    rs.getInt("division")
-//                    );
-//            customers.add(customer);
-//        }
-//        customerTableVIew.setItems(customers);
-//
-//    }
 }

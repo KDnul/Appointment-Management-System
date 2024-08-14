@@ -63,6 +63,7 @@ public class CustomerAddController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /** Action event for when the cancel button is clicked. Sends user back to the Customer View FXML. */
     @FXML
     void onAddCustomerCancelBtnClicked(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
@@ -78,22 +79,21 @@ public class CustomerAddController implements Initializable {
 
     }
 
+    /** Action even for when the save button is clicked. Grabs values from the text fields and makes a new customer class based off them. If there are missing values, throw an error. If there
+     * are no errors, insert the added customer into the database using the Customer Query insert method. */
     @FXML
     void onAddCustomerSaveBtnClicked(ActionEvent event) {
         String name = addCustomerNameTxt.getText();
         String address = addCustomerAddressTxt.getText();
         String postal = addCustomerPostalTxt.getText();
         String phone = addCustomerPhoneNumberTxt.getText();
-        String country = (String) addCustomerCountryCB.getValue();
-        String division = (String) addCustomerDivisionCB.getValue();
+        String country = addCustomerCountryCB.getValue();
+        String division = addCustomerDivisionCB.getValue();
 
         if (name.isEmpty() || address.isEmpty() || postal.isEmpty() || phone.isEmpty() || country == null || division == null) {
             addCustomerErrorLbl.setText("Please fill out all required fields.");
         } else {
             try {
-//                // Insert new customer into database
-//                String sql = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
                 // Generate Timestamp
                 LocalDateTime currentTime = LocalDateTime.now();
                 ZoneId utcZone = ZoneId.of("UTC");
@@ -122,7 +122,7 @@ public class CustomerAddController implements Initializable {
         }
     }
 
-
+    /** Action event for when a division is selected, automatically filters the country CB value to the appropriate country for that division. */
     @FXML
     void onCountryCBFilter(ActionEvent event) {
         String selectedDivision = addCustomerDivisionCB.getValue();
@@ -142,6 +142,7 @@ public class CustomerAddController implements Initializable {
         }
     }
 
+    /** Action event for when a country is selected, automatically filters the country CB value to the appropriate divisions for that country. */
     @FXML
     void onDivisionCBFilter(ActionEvent event) throws SQLException {
         String selectedCountry = addCustomerCountryCB.getValue();
@@ -164,7 +165,8 @@ public class CustomerAddController implements Initializable {
     }
 
 
-    /** Gets associated country by division name */
+    /** Gets associated country by division name.
+     * @param division String value of selected division. */
     private String associatedCountry(String division) throws SQLException {
         String associatedCountry = null;
 
@@ -192,10 +194,11 @@ public class CustomerAddController implements Initializable {
 
     }
 
-    /** Gets associated division by country */
+    /** Gets associated division by country.
+     * @param country String value of selected country.
+     * @return ObservableList<String> divisions. return a list of divisions for that country.  */
     private ObservableList<String> associatedDivision(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
-//        List<String> divisions = new ArrayList<>();
 
         String sql = "SELECT Division FROM first_level_divisions WHERE Country_ID = " +
                 "(SELECT Country_ID FROM countries WHERE Country = ?)";
@@ -257,7 +260,8 @@ public class CustomerAddController implements Initializable {
         }
     }
 
-    /** Gets Division id based on name */
+    /** Gets Division id based on name.
+     * @param division String value of selected division. */
     private int getDivisionId(String division) throws SQLException {
         String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
 
@@ -275,24 +279,7 @@ public class CustomerAddController implements Initializable {
         return divisionId;
     }
 
-    /** Gets Country ID by name */
-    private int getCountryId (String country) throws SQLException {
-        String sql = "SELECT Country_ID FROM countries WHERE Country = ?";
-
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ps.setString(1, country);
-
-        ResultSet rs = ps.executeQuery();
-
-        int countryId = -1;
-
-        if (rs.next()) {
-            countryId = rs.getInt("Country_ID");
-        }
-
-        return countryId;
-    }
-
+    /** Initial setup for when customer add FXML is loaded. Automatically populates the division and country combo boxes. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateDivisionCB();

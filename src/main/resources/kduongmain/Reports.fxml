@@ -34,15 +34,15 @@
                      <children>
                         <TableView fx:id="reportsScheduleContactTableView" layoutY="32.0" prefHeight="272.0" prefWidth="816.0">
                           <columns>
-                            <TableColumn fx:id="reportsApptScheduleIdCol" prefWidth="67.0" text="ID" />
+                            <TableColumn fx:id="reportsApptScheduleIdCol" prefWidth="67.0" text="Appointment_ID" />
                             <TableColumn fx:id="reportsScheduleTitleCol" prefWidth="96.0" text="Title" />
                               <TableColumn fx:id="reportsScheduleDescriptionCol" prefWidth="75.0" text="Description" />
                               <TableColumn fx:id="reportsScheduleContactCol" prefWidth="83.0" text="Contact" />
                               <TableColumn fx:id="reportsScheduleTypeCol" prefWidth="78.0" text="Type" />
                               <TableColumn fx:id="reportsScheduleStartDateTimeCol" prefWidth="112.0" text="Start Date/Time" />
                               <TableColumn fx:id="reportsScheduleEndDateTimeCol" prefWidth="132.0" text="End Date/Time" />
-                              <TableColumn fx:id="reportsScheduleCustomerCol" prefWidth="98.0" text="Customer" />
-                              <TableColumn fx:id="reportsScheduleUserCol" prefWidth="74.0" text="User" />
+                              <TableColumn fx:id="reportsScheduleCustomerCol" prefWidth="98.0" text="Customer_ID" />
+                              <TableColumn fx:id="reportsScheduleUserCol" prefWidth="74.0" text="User_ID" />
                           </columns>
                         </TableView>
                         <ComboBox fx:id="reportsContactCB" layoutX="333.0" layoutY="2.0" onAction="#setContactCBPopulate" prefWidth="150.0" />

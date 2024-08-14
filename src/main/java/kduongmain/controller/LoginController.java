@@ -1,11 +1,7 @@
 package kduongmain.controller;
 
 import helper.AppointmentQuery;
-import helper.JDBC;
 import helper.UserQuery;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +17,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -33,13 +27,12 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-//    private static ObservableList<String> languageList = FXCollections.observableArrayList("English","French");
 
     @FXML
     private Label loginErrorLbl;
 
     @FXML
-    private ComboBox<String> loginLanguageCB;
+    private Label loginLanguageLbl;
 
     @FXML
     private Label loginLocationLbl;
@@ -69,15 +62,19 @@ public class LoginController implements Initializable {
     Stage stage;
     Parent scene;
 
-    // Grab current logged in user
+    // Grab current logged-in user
     private static String currentUserName;
     public static String getCurrentUserName() {
         return currentUserName;
     }
 
-
+    /** Action event for when the user clicks on the login button. Checks to see if the correct username and password is submitted. If username/password does not match
+     * the login records, throws an error. If username/password is submitted successfully, checks if the current user has any appointments within 15 minutes of login time. If there is no
+     * appointments within 15 minutes, display a custom message indicating there are no appointments within 15 minutes. If there is an appointment within 15 minutes, display a custom
+     * message telling the user the date/time of the appointment that is happening within 15 minutes. Checks also the user's system language. If the language is set in English display
+     * the login FXML in English, if the system language is French, display the login FXML in French. Initially also checks the user's system location to determine ZoneID. */
     @FXML
-    void onLoginSubmitBtnClicked(ActionEvent event) throws IOException, SQLException {
+    void onLoginSubmitBtnClicked(ActionEvent event) {
 
         boolean loginSuccess = false; // Default value
 
@@ -112,7 +109,7 @@ public class LoginController implements Initializable {
                         Alert confirmRemoval = new Alert(Alert.AlertType.WARNING);
                         confirmRemoval.setTitle(ResourceBundle.getBundle("Nat").getString("Alert"));
                         confirmRemoval.setContentText(ResourceBundle.getBundle("Nat").getString("Appointment") + " " +
-                                appointment.getId() + " " + ResourceBundle.getBundle("Nat").getString("beginsat") + " " + appointment.getTimeStart().toLocalTime());
+                                appointment.getId() + " " + ResourceBundle.getBundle("Nat").getString("beginsat") + " " + appointment.getTimeStart().toLocalDate() + " " + appointment.getTimeStart().toLocalTime());
                         confirmRemoval.getButtonTypes().clear();
                         confirmRemoval.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
                         confirmRemoval.showAndWait();
@@ -140,16 +137,17 @@ public class LoginController implements Initializable {
         } catch(Exception e) {
             System.out.println("ERROR AUTHENTICATING USER " +  e);
         }
-
-
     }
 
+    /** Action event for when the cancel button is clicked. Exits the program entirely. */
     public void loginCancelBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
 
-    // Method to record login attempt
+    /** Method to record login attempts whether successful or unsuccessful. Records the date/time of the attempted login and puts it in a login_activity.txt.
+     * @param loginSuccessful boolean for a successful login attempt.
+     * @param username String value of current user. */
     private void loginAttempt(String username, boolean loginSuccessful) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String status = loginSuccessful ? "Successful" : "Failed";
@@ -158,33 +156,32 @@ public class LoginController implements Initializable {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("login_activity.txt", true))) {
             writer.write(record);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("ERROR LOGGING LOGIN ATTEMPT: " + e.getMessage());
         }
     }
 
+    /** Initial setup for the login.FXML. Attempts to get user's current system language settings and translates the FXML to french if the language setting is set to French.  */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Default in English
-        loginLanguageCB.setValue("English");
-        loginLanguageCB.getItems().addAll("English","French");
+        loginLanguageLbl.setText("English");
 
         try{
             ResourceBundle rb = ResourceBundle.getBundle("Nat", Locale.getDefault());
 
             ZoneId zone = ZoneId.systemDefault();
 
-            //removed
             //loginScreenLocationField.setText(Locale.getDefault().getDisplayCountry());
             loginLocationTxt.setText(String.valueOf(zone));
 
             if(Locale.getDefault().getLanguage().equals("fr")) {
-                loginLanguageCB.setValue("French");
+                loginLanguageLbl.setText("French");
                 loginUsernameLbl.setText(rb.getString("username"));
                 loginPasswordLbl.setText(rb.getString("password"));
                 loginSubmitBtn.setText(rb.getString("Login"));
                 loginCancelBtn.setText(rb.getString("Exit"));
                 loginLocationLbl.setText(rb.getString("Location"));
-
+                loginLocationLbl.setText(rb.getString("Incorrect"));
             }
 
         } catch(MissingResourceException e) {
@@ -192,7 +189,5 @@ public class LoginController implements Initializable {
         } catch (Exception e){
             System.out.println(e);
         }
-
-
     }
 }

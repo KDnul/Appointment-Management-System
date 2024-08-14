@@ -181,9 +181,9 @@ public class AppointmentViewController implements Initializable {
             appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
             appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("timeStart"));
             appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("timeEnd"));
-            appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             appointmentContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
-            appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+            appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         } else if (appointmentWeekRB.isSelected()) {
             appointmentTableView.setItems(AppointmentQuery.getWeeklyAppointments());
         } else if (appointmentMonthRB.isSelected()) {

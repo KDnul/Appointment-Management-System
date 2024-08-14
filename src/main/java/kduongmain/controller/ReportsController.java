@@ -2,6 +2,7 @@ package kduongmain.controller;
 
 import helper.AppointmentQuery;
 import helper.ContactQuery;
+import helper.CountryQuery;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import kduongmain.model.Appointment;
 import kduongmain.model.Contact;
+import kduongmain.model.Country;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,7 +69,7 @@ public class ReportsController implements Initializable {
     private TableColumn<?, ?> reportsCountryCol;
 
     @FXML
-    private TableView<?> reportsCountryCustomerTableView;
+    private TableView<Country> reportsCountryCustomerTableView;
 
     @FXML
     private ComboBox<String> reportsContactCB;
@@ -126,41 +128,10 @@ public class ReportsController implements Initializable {
             reportsScheduleContactTableView.setItems(AppointmentQuery.getContactAppointments(contactID));
         }
     }
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Appointment Totals Tab
-        reportsApptTypeTableView.setItems(AppointmentQuery.getNumAppointmentsByType());
-        reportsApptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        reportsApptTypeTotalCol.setCellValueFactory(new PropertyValueFactory<>("typeTotal"));
-
-        // Appointment Months tab
-        reportsApptMonthTableView.setItems(AppointmentQuery.getAppointmentMonthlyTotal());
-        reportsApptMonthCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        reportsApptMonthTotalCol.setCellValueFactory(new PropertyValueFactory<>("typeTotal"));
-
-        // Contact Schedule tab
-        try {
-            contactPopulate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        reportsApptScheduleIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        reportsScheduleTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        reportsScheduleDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        reportsScheduleContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
-        reportsScheduleTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        reportsScheduleStartDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("timeStart"));
-        reportsScheduleEndDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("timeEnd"));
-        reportsScheduleCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        reportsScheduleUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
-
-
-
-    }
 
     public void contactPopulate() throws SQLException {
         String query = "SELECT contact_name FROM contacts";
-        List<String> contacts = new ArrayList<>();
+        ObservableList<String> contacts = FXCollections.observableArrayList();
 
         try (PreparedStatement statement = JDBC.connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -211,14 +182,14 @@ public class ReportsController implements Initializable {
                     String description = rs.getString("Description");
                     String location = rs.getString("Location");
                     String type = rs.getString("Type");
+                    int contactID = rs.getInt("Contact_ID");
                     LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
                     LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
                     int customerId = rs.getInt("Customer_ID");
                     int userId = rs.getInt("User_ID");
-                    int contactID = rs.getInt("Contact_ID");
-                    String contact = rs.getString("contact_name");
-                    String user = rs.getString("user_name");
-                    String customer = rs.getString("customer_name");
+                    String contact = rs.getString("Contact_Name");
+                    String user = rs.getString("User_Name");
+                    String customer = rs.getString("Customer_Name");
                     Appointment appointment = new Appointment(id, title, description, location, type, start, end, customerId, userId, contactID, customer, user, contact);
                     appointments.add(appointment);
                 }
@@ -242,6 +213,41 @@ public class ReportsController implements Initializable {
             }
         }
         throw new SQLException("Contact ID not found for name: " + contactName);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Appointment Totals Tab
+        reportsApptTypeTableView.setItems(AppointmentQuery.getNumAppointmentsByType());
+        reportsApptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        reportsApptTypeTotalCol.setCellValueFactory(new PropertyValueFactory<>("typeTotal"));
+
+        // Appointment Months tab
+        reportsApptMonthTableView.setItems(AppointmentQuery.getAppointmentMonthlyTotal());
+        reportsApptMonthCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        reportsApptMonthTotalCol.setCellValueFactory(new PropertyValueFactory<>("typeTotal"));
+
+        // Contact Schedule tab
+        try {
+            contactPopulate();
+            reportsApptScheduleIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+            reportsScheduleTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            reportsScheduleDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+            reportsScheduleContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+            reportsScheduleTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+            reportsScheduleStartDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("timeStart"));
+            reportsScheduleEndDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("timeEnd"));
+            reportsScheduleCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            reportsScheduleUserCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Customer Total By Country Tab
+        reportsCountryCustomerTableView.setItems(CountryQuery.totalCountry());
+        reportsCountryCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        reportsCustomerTotalCol.setCellValueFactory(new PropertyValueFactory<>("countryTotal"));
+
     }
 
 }

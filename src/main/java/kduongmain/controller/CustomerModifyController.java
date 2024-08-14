@@ -152,6 +152,7 @@ public class CustomerModifyController implements Initializable {
 
     }
 
+    /** Grabs data form the customer view FXML of the current selected customer and populates the customer modify FXML with the appropriate values. */
     public void sendCustomer(Customer customer) {
         modCustomerIdTxt.setText(String.valueOf(customer.getId()));
         modCustomerNameTxt.setText(customer.getName());
@@ -163,7 +164,8 @@ public class CustomerModifyController implements Initializable {
 
     }
 
-    /** Gets associated country by division name */
+    /** Gets associated country by division name.
+     * @param division String value of selected country.*/
     private String associatedCountry(String division) throws SQLException {
         String associatedCountry = null;
 
@@ -190,10 +192,11 @@ public class CustomerModifyController implements Initializable {
         return associatedCountry;
 
     }
-    /** Gets associated division by country */
+    /** Gets associated division by country.
+     * @param country String value of selected country.
+     * @return ObservableList<String> divisions. return a list of divisions for that country.  */
     private ObservableList<String> associatedDivision(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
-//        List<String> divisions = new ArrayList<>();
 
         String sql = "SELECT Division FROM first_level_divisions WHERE Country_ID = " +
                 "(SELECT Country_ID FROM countries WHERE Country = ?)";
@@ -218,6 +221,7 @@ public class CustomerModifyController implements Initializable {
         return divisions;
     }
 
+    /** Populates the country combo box */
     private void populateCountryCB() {
         String sql = "SELECT Country FROM countries";
         ObservableList<String> countries = FXCollections.observableArrayList();
@@ -254,7 +258,8 @@ public class CustomerModifyController implements Initializable {
         }
     }
 
-    /** Gets Division id based on name */
+    /** Gets Division id based on name.
+     * @param division String value of selected division. */
     private int getDivisionId(String division) throws SQLException {
         String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
 

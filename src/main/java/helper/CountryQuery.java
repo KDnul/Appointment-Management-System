@@ -1,5 +1,9 @@
 package helper;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import kduongmain.model.Country;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,6 +62,26 @@ public abstract class CountryQuery {
             System.out.print(countryIdPK + " | ");
             System.out.print(countryName + "\n");
         }
+    }
+
+    public static ObservableList<Country> totalCountry() {
+        ObservableList<Country> country = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT countries.Country, COUNT(customers.Customer_ID) AS Total FROM countries " +
+                    "INNER JOIN first_level_divisions ON  countries.Country_ID = first_level_divisions.Country_ID " +
+                    "INNER JOIN customers ON customers.Division_ID = first_level_divisions.Division_ID GROUP BY countries.Country";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String countryName = rs.getString("Country");
+                int monthTotal = rs.getInt("Total");
+                Country c = new Country(countryName, monthTotal);
+                country.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return country;
     }
 
 }
