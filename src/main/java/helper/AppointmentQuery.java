@@ -75,7 +75,17 @@ public class AppointmentQuery {
         ps.executeUpdate();
     }
 
-    /** Method to update the appointment database */
+    /** Method to update the appointment database.
+     *  @param id Object id
+     *  @param title Object title
+     *  @param description Object description
+     *  @param location Object location
+     *  @param type Object type
+     *  @param start Object time starts
+     *  @param end Object time ends
+     *  @param customerId Object customer id
+     *  @param userId Object user id
+     *  @param contactId Object contact id.*/
     public static void update(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end,
                                Timestamp lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId, int id) {
         try {
@@ -103,7 +113,8 @@ public class AppointmentQuery {
         }
     }
 
-    /** Method to delete appointment based on appointment Id */
+    /** Method to delete appointment based on appointment Id.
+     * @param id Object id. */
     public static void delete(int id) {
         try {
             String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";

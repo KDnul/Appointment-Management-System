@@ -65,6 +65,7 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /** Action event for when the records button is clicked. Sends user to the Reports FXML. */
     @FXML
     void onRecordsBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -74,6 +75,8 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /** Initial setup for when the main menu FXML is loaded. Gets default language as English, if the user system language
+     * is French, translate the text to the French language. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
