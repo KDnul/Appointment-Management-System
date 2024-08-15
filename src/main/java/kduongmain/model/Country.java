@@ -37,10 +37,12 @@ public class Country {
         this.name = name;
     }
 
+    /** @return the country total. */
     public int getCountryTotal() {
         return countryTotal;
     }
 
+    /** @param countryTotal sets the country total. */
     public void setCountryTotal(int countryTotal) {
         this.countryTotal = countryTotal;
     }

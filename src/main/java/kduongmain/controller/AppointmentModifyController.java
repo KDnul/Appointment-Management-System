@@ -76,6 +76,7 @@ public class AppointmentModifyController implements Initializable {
     Parent scene;
     Stage stage;
 
+    /** Action even for when the cancel button is clicked. Discards all changes being made and sends the user back to the Appointment View FXML. */
     @FXML
     void onModAppointmentCancelBtnClicked(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
@@ -90,6 +91,8 @@ public class AppointmentModifyController implements Initializable {
         }
     }
 
+    /** Action event for when the user clicks the save button in the Appointment Modify Form FMXL. Grabs all current fields and updates the currently selected
+     * appointment using the Appointment Update method. If there is an error in the form, throws an error to the user to fill out the forms correctly. */
     @FXML
     void onModAppointmentSaveBtnClicked(ActionEvent event) throws SQLException {
         int id = Integer.parseInt(modAppointmentId.getText());
@@ -121,12 +124,7 @@ public class AppointmentModifyController implements Initializable {
                 alert.setContentText("ERROR: Your appointment must be within business hours from 8:00 a.m to 10:00 p.m ET, including weekends.");
                 alert.showAndWait();
 
-            } else if (isOverlapping(customerId, Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime))) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Warning Dialog");
-                alert.setContentText("ERROR: Appointment overlaps with existing appointments for this customer.");
-                alert.showAndWait();
-            } else {
+            }else {
                 // Generate Timestamp
                 LocalDateTime currentTime = LocalDateTime.now();
                 ZoneId utcZone = ZoneId.of("UTC");
@@ -138,7 +136,7 @@ public class AppointmentModifyController implements Initializable {
                 // Get the logged-in username
                 String createdBy = LoginController.getCurrentUserName();
 
-                AppointmentQuery.add(title, description, location, type, startDateTime, endDateTime, LocalDateTime.now(), createdBy, timestamp, createdBy, customerId, userId, contactId);
+                AppointmentQuery.update(title, description, location, type, startDateTime, endDateTime, timestamp, createdBy, customerId, userId, contactId, id);
 
                 // Return to Customer View Page
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -147,10 +145,12 @@ public class AppointmentModifyController implements Initializable {
                 stage.show();
             }
         }catch(Exception e){
-            System.out.println("ERROR ADDING APPOINTMENT: " + e.getMessage());
+            System.out.println("ERROR MODIFYING APPOINTMENT: " + e.getMessage());
         }
     }
 
+    /** Grabs data form the Appointment view FXML of the current selected customer and populates the Appointment modify FXML with the appropriate values.
+     * @param appointment Appointment class of selected Appointment in the Appointment view FXML. */
     public void sendAppointment(Appointment appointment) {
         modAppointmentId.setText(String.valueOf(appointment.getId()));
         modAppointmentTitleTxt.setText(appointment.getTitle());
@@ -166,6 +166,7 @@ public class AppointmentModifyController implements Initializable {
         modAppointmentUserIdCB.setValue(appointment.getUserName());
     }
 
+    /** Initial setup for Appointment Modify FXML. Pre-populates the combo boxes. The LAMBDA EXPRESSIONS also helps populates the  time combo box to increment every 15 minutes. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -250,7 +251,9 @@ public class AppointmentModifyController implements Initializable {
         modAppointmentCustomerIdCB.getItems().addAll(customers);
     }
 
-    /** Gets user id by username. */
+    /** Gets user id by username.
+     * @param userName String value of current username.
+     * @return Returns Integer for userId. */
     private int getUserIdByName(String userName) throws SQLException {
         String sql = "SELECT User_ID FROM users WHERE user_name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -265,7 +268,9 @@ public class AppointmentModifyController implements Initializable {
         return userId;
     }
 
-    /** Gets contact id by contact name. */
+    /** Gets contact id by contact name.
+     * @param contactName String value of current contact.
+     * @return contactId Returns Integer for contact Id. */
     private int getContactIdByName(String contactName) throws SQLException {
         String sql = "SELECT Contact_ID FROM Contacts WHERE Contact_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -280,7 +285,9 @@ public class AppointmentModifyController implements Initializable {
         return contactId;
     }
 
-    /** Gets customer id by customer name. */
+    /** Gets customer id by customer name.
+     * @param customerName String value of current customer.
+     * @return Returns Integer for customer Id. */
     private int getCustomerIdByName(String customerName) throws SQLException {
         String sql = "SELECT Customer_ID FROM customers WHERE Customer_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -295,46 +302,9 @@ public class AppointmentModifyController implements Initializable {
         return customerId;
     }
 
-    /** Method to check it appointments overlaps with existing appointments for customer */
-    private boolean isOverlapping(int customerId, Timestamp startTime, Timestamp endTime) {
-        try {
-            System.out.println("Checking for overlapping appointments");
-
-            System.out.println("isAppointmentOverLapping - customerId: " + customerId);
-            System.out.println("isAppointmentOverLapping - start: " + startTime);
-            System.out.println("isAppointmentOverLapping - end: " + endTime);
-
-            // Query to retrieve existing appointments for the customer that overlap with the new appointment
-            String sql = "SELECT COUNT(*) FROM Appointments WHERE Customer_ID = ? " +
-                    "AND ((Start <= ? AND End >= ?) OR (Start <= ? AND End >= ?) OR (Start < ? AND End > ?))";
-
-            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-            ps.setInt(1, customerId);
-            ps.setTimestamp(2, Timestamp.valueOf(startTime.toLocalDateTime()));
-            ps.setTimestamp(3, Timestamp.valueOf(startTime.toLocalDateTime()));
-            ps.setTimestamp(4, Timestamp.valueOf(endTime.toLocalDateTime()));
-            ps.setTimestamp(5, Timestamp.valueOf(endTime.toLocalDateTime()));
-            ps.setTimestamp(6, Timestamp.valueOf(startTime.toLocalDateTime()));
-            ps.setTimestamp(7, Timestamp.valueOf(endTime.toLocalDateTime()));
-
-            ResultSet rs = ps.executeQuery();
-
-            // Check if there are overlapping appointments
-            if (rs.next() && rs.getInt(1) > 0) {
-                System.out.println("Overlapping appointments found.");
-                return true;
-            }
-
-            // No overlapping appointments found
-            System.out.println("No overlapping appointments found.");
-            return false;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /** Method to check if start and end times are within the business hours of the business. */
+    /** Method to check if start and end times are within the business hours of the business.
+     * @param startDateTime Local Date Time of the start hours of the business.
+     * @param endDateTime Loca Date Time of the end hours of the business. */
     private boolean isInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         // Define business hours in ET

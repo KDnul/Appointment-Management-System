@@ -12,10 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import kduongmain.MainApplication;
-import kduongmain.model.FirstLevelDivision;
 
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -26,7 +23,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class CustomerAddController implements Initializable {
 
@@ -144,7 +144,7 @@ public class CustomerAddController implements Initializable {
 
     /** Action event for when a country is selected, automatically filters the country CB value to the appropriate divisions for that country. */
     @FXML
-    void onDivisionCBFilter(ActionEvent event) throws SQLException {
+    void onDivisionCBFilter(ActionEvent event) {
         String selectedCountry = addCustomerCountryCB.getValue();
         System.out.println("DIVISION CB FILTER ACTIVATED");
 

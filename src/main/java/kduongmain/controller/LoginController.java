@@ -17,7 +17,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -171,7 +170,6 @@ public class LoginController implements Initializable {
 
             ZoneId zone = ZoneId.systemDefault();
 
-            //loginScreenLocationField.setText(Locale.getDefault().getDisplayCountry());
             loginLocationTxt.setText(String.valueOf(zone));
 
             if(Locale.getDefault().getLanguage().equals("fr")) {

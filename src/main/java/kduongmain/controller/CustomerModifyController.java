@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import kduongmain.model.Customer;
 
@@ -29,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerModifyController implements Initializable {
@@ -66,11 +64,22 @@ public class CustomerModifyController implements Initializable {
     Parent scene;
     Stage stage;
 
+    /** Action event for when the user clicks the cancel button. Discards all changes being made and sends the user back to the Customer View FXML. */
     @FXML
-    void onModCustomerCancelBtnClicked(ActionEvent event) {
+    void onModCustomerCancelBtnClicked(ActionEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Return to Customer View Page
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/CustomerView.fxml"))));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
+    /** Action event that saves the current fields and modifies the existing customer. */
     @FXML
     void onModCustomerSaveBtnClicked(ActionEvent event) throws SQLException, IOException {
         int id = Integer.parseInt(modCustomerIdTxt.getText());
@@ -78,8 +87,8 @@ public class CustomerModifyController implements Initializable {
         String address = modCustomerAddressTxt.getText();
         String postal = modCustomerPostalTxt.getText();
         String phone = modCustomerPhoneNumberTxt.getText();
-        String country = (String) modCustomerCountryCB.getValue();
-        String division = (String) modCustomerDivisionCB.getValue();
+        String country = modCustomerCountryCB.getValue();
+        String division = modCustomerDivisionCB.getValue();
 
         if (name.isEmpty() || address.isEmpty() || postal.isEmpty() || phone.isEmpty() || country == null || division == null) {
             modCustomerErrorLbl.setText("Please fill out all required fields.");
@@ -110,6 +119,7 @@ public class CustomerModifyController implements Initializable {
 
     }
 
+    /** Filters the country combo box based on what division is selected. */
     @FXML
     void onModCountryCBFilter(ActionEvent event) {
         String selectedDivision = modCustomerDivisionCB.getValue();
@@ -130,6 +140,7 @@ public class CustomerModifyController implements Initializable {
 
     }
 
+    /** Filters the division combo box with the associated divisions based on what country is selected. */
     @FXML
     void onModDivisionCBFilter(ActionEvent event) {
         String selectedCountry = modCustomerCountryCB.getValue();
@@ -152,7 +163,8 @@ public class CustomerModifyController implements Initializable {
 
     }
 
-    /** Grabs data form the customer view FXML of the current selected customer and populates the customer modify FXML with the appropriate values. */
+    /** Grabs data form the customer view FXML of the current selected customer and populates the customer modify FXML with the appropriate values.
+     * @param customer Customer class of selected customer in the customer view FXML. */
     public void sendCustomer(Customer customer) {
         modCustomerIdTxt.setText(String.valueOf(customer.getId()));
         modCustomerNameTxt.setText(customer.getName());
@@ -277,6 +289,7 @@ public class CustomerModifyController implements Initializable {
         return divisionId;
     }
 
+    /** Initial setup for customer modify FXML. Pre-populates the country and division combo boxes. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateCountryCB();

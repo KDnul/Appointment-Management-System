@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import kduongmain.model.Appointment;
-import kduongmain.model.Contact;
 import kduongmain.model.Country;
 
 import java.io.IOException;
@@ -26,8 +25,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -105,6 +102,7 @@ public class ReportsController implements Initializable {
     Stage stage;
 
 
+    /** Action event to bring the user back to the Main Menu FXML. */
     @FXML
     void onReportsBackBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -113,22 +111,7 @@ public class ReportsController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    void setContactCBPopulate(ActionEvent event) throws SQLException {
-        String contactName = String.valueOf(reportsContactCB.getValue());
-        int contactID = ContactQuery.returnContactId(contactName);
-        if (AppointmentQuery.getContactAppointments(contactID).isEmpty()) {
-            reportsScheduleContactTableView.setPlaceholder(new Label(contactName + " has no appointments."));
-            reportsScheduleContactTableView.refresh();
-            for (int i = 0; i < reportsScheduleContactTableView.getItems().size(); i++) {
-                reportsScheduleContactTableView.getItems().clear();
-                reportsScheduleContactTableView.setPlaceholder(new Label(contactName + " has no appointments."));
-            }
-        } else {
-            reportsScheduleContactTableView.setItems(AppointmentQuery.getContactAppointments(contactID));
-        }
-    }
-
+    /** Method to populate the contact combo box in the Contact Schedule tab. */
     public void contactPopulate() throws SQLException {
         String query = "SELECT contact_name FROM contacts";
         ObservableList<String> contacts = FXCollections.observableArrayList();
@@ -162,6 +145,9 @@ public class ReportsController implements Initializable {
         }
     }
 
+    /** Method to get appointments for a specific contact in the Contact Schedule tab.
+     * @param contactId Integer value for contactId.
+     * @return appointments Return class of appointment for specific contactId. */
     private ObservableList<Appointment> getAppointmentsForContact(int contactId) throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         String sql = "SELECT a.appointment_id, a.title, a.description, a.location, a.contact_id, a.type, a.start, a.end, a.customer_id, a.user_id, a.create_Date, a.created_By, a.last_update, a.last_updated_by, " +
@@ -197,11 +183,10 @@ public class ReportsController implements Initializable {
         }
         return appointments;
     }
-    private LocalDateTime parseToLocalDateTime(String dateTimeStr) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(dateTimeStr, formatter);
-    }
 
+    /** Method to get contact ID by string value of contact name.
+     * @param contactName String value of contact name.
+     * @return int Returns integer when contact ID is found by its string value. */
     private int getContactId(String contactName) throws SQLException {
         String sql = "SELECT contact_id FROM contacts WHERE contact_name = ?";
         try (PreparedStatement ps = JDBC.connection.prepareStatement(sql)) {
@@ -215,6 +200,7 @@ public class ReportsController implements Initializable {
         throw new SQLException("Contact ID not found for name: " + contactName);
     }
 
+    /** Initial setup of Reports FXML. Pre-populates the tableviews in each tab with appropriate values from the database. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Appointment Totals Tab

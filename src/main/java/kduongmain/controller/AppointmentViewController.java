@@ -1,7 +1,6 @@
 package kduongmain.controller;
 
 import helper.AppointmentQuery;
-import helper.ContactQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import kduongmain.model.Appointment;
-import kduongmain.model.Contact;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,24 +76,28 @@ public class AppointmentViewController implements Initializable {
     Parent scene;
     Stage stage;
 
+    /** Action event listener for when the "All" radio button is clicked. This sets the table to view all appointments in the database. */
     @FXML
     void appointmentAllRBClicked(ActionEvent event) {
         appointmentTableView.setItems(AppointmentQuery.getAllAppointments());
         appointmentTableView.refresh();
     }
 
+    /** Action event listener for when the "Month" radio button is clicked. This sets the table to view all appointments that is occurring this month. */
     @FXML
     void appointmentMonthRBClicked(ActionEvent event) {
         appointmentTableView.setItems(AppointmentQuery.getMonthlyAppointments());
         appointmentTableView.refresh();
     }
 
+    /** Action listener for when the "Week" radio button is clicked. This sets the table to view all appointments that is occurring on the current week. */
     @FXML
     void appointmentWeekRBClicked(ActionEvent event) {
         appointmentTableView.setItems(AppointmentQuery.getWeeklyAppointments());
         appointmentTableView.refresh();
     }
 
+    /** Action event that sends the user to the Add Appointment FXML to add an appointment to the database. */
     @FXML
     void onAppointmentAddBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -105,6 +106,7 @@ public class AppointmentViewController implements Initializable {
         stage.show();
     }
 
+    /** Action event that sends the user back to the main menu FXML. */
     @FXML
     void onAppointmentBackBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -114,6 +116,7 @@ public class AppointmentViewController implements Initializable {
 
     }
 
+    /** Actione ven that sends the user to the Modify Appointment FXML to modify the selected appointment. */
     @FXML
     void onAppointmentModifyBtnClicked(ActionEvent event) throws Exception {
         try {
@@ -138,6 +141,7 @@ public class AppointmentViewController implements Initializable {
 
     }
 
+    /** Action event to delete the currently selected appointment. */
     @FXML
     void onAppointmentDelBtn(ActionEvent event) {
         try {
@@ -160,7 +164,7 @@ public class AppointmentViewController implements Initializable {
                     appointmentTableView.setItems(AppointmentQuery.getMonthlyAppointments());
                     appointmentTableView.refresh();
                 }
-                System.out.print("DELETING PART: " + appointment);
+                System.out.print("DELETING APPOINTMENT: " + appointment);
             }
         }catch(Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -169,6 +173,8 @@ public class AppointmentViewController implements Initializable {
             alert.showAndWait();
         }
     }
+
+    /** Initial setup for the Appointment View FXML. Shows All appointments by default. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (appointmentAllRB.isSelected()) {

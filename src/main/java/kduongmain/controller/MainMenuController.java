@@ -39,30 +39,31 @@ public class MainMenuController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /** Action even for when the appointment button is clicked. Sends the user to the Appointment View FXML. */
     @FXML
     void onAppointmentsBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/AppointmentView.fxml"))));
         stage.setScene(new Scene(scene));
         stage.show();
-
     }
 
+    /** Action event for when the customer button is clicked. Sends the user to the Customer View FXML. */
     @FXML
     void onCustomersBtnClicked(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/CustomerView.fxml"))));
         stage.setScene(new Scene(scene));
         stage.show();
-
     }
 
+    /** Action event for when the exit button is clicked. Exits the whole application */
     @FXML
     void onExitBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
-
     }
+
 
     @FXML
     void onRecordsBtnClicked(ActionEvent event) throws IOException {

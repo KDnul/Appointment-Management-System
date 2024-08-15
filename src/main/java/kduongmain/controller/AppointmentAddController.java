@@ -12,15 +12,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import kduongmain.model.Appointment;
-import kduongmain.model.User;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class AppointmentAddController implements Initializable {
 
@@ -68,18 +71,17 @@ public class AppointmentAddController implements Initializable {
     @FXML
     private Label addAppointmentErrorLbl;
 
-    private int appointmentId = -1;
-
     Parent scene;
     Stage stage;
 
+    /** Action event for when the user clicks the cancel button. Sends the user back to the Appointment View FXML. */
     @FXML
     void onAddAppointmentCancelBtnClicked(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Return to Customer View Page
+            // Return to Appointment View Page
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/kduongmain/AppointmentView.fxml"))));
             stage.setScene(new Scene(scene));
@@ -87,6 +89,9 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
+    /** Action event for when the user clicks the save button. Grabs all the fields in the form and inserts it into an appointment class
+     * .If a field is missing, throws an error to the user to correctly fill out all fields. If all fields are filled, use the Appointment Query Insert method to
+     * add the appointment to the database. */
     @FXML
     void onAddAppointmentSaveBtnClicked(ActionEvent event) throws SQLException {
         String title = addAppointmentTitleTxt.getText();
@@ -149,6 +154,7 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
+    /** Initial setup for Appointment Add FXML. Pre-populates the combo boxes. The LAMBDA EXPRESSIONS also helps populates the  time combo box to increment every 15 minutes. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -233,7 +239,8 @@ public class AppointmentAddController implements Initializable {
         addAppointmentCustomerIdCB.getItems().addAll(customers);
     }
 
-    /** Gets user id by username. */
+    /** Gets user id by username.
+     * @param userName String value of username. */
     private int getUserIdByName(String userName) throws SQLException {
         String sql = "SELECT User_ID FROM users WHERE user_name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -248,7 +255,8 @@ public class AppointmentAddController implements Initializable {
         return userId;
     }
 
-    /** Gets contact id by contact name. */
+    /** Gets contact id by contact name.
+     * @param contactName String value of contact name. */
     private int getContactIdByName(String contactName) throws SQLException {
         String sql = "SELECT Contact_ID FROM Contacts WHERE Contact_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -263,7 +271,8 @@ public class AppointmentAddController implements Initializable {
         return contactId;
     }
 
-    /** Gets customer id by customer name. */
+    /** Gets customer id by customer name.
+     * @param customerName String value of customer name. */
     private int getCustomerIdByName(String customerName) throws SQLException {
         String sql = "SELECT Customer_ID FROM customers WHERE Customer_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -278,7 +287,11 @@ public class AppointmentAddController implements Initializable {
         return customerId;
     }
 
-    /** Method to check it appointments overlaps with existing appointments for customer */
+    /** Method to check it appointments overlaps with existing appointments for customer. If there is an overlapping appointment, throws an error to the user that
+     * they cannot make an appointment that is over an existing one. If there are no errors, continue with the adding appointment process.
+     * @param customerId Integer value of selected customer ID.
+     * @param startTime Timestamp value of the current start time of the appointment being made.
+     * @param endTime Timestamp value of the current end time of the appointment being made.*/
     private boolean isOverlapping(int customerId, Timestamp startTime, Timestamp endTime) {
         try {
             System.out.println("Checking for overlapping appointments");
@@ -317,7 +330,9 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
-    /** Method to check if start and end times are within the business hours of the business. */
+    /** Method to check if start and end times are within the business hours of the business.
+     * @param startDateTime Local Date Time value of the start hours of the business.
+     * @param endDateTime Local Date Time value of the end hours of the business.*/
     private boolean isInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         // Define business hours in ET
