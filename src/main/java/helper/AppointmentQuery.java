@@ -3,7 +3,6 @@ package helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import kduongmain.model.Appointment;
-import kduongmain.model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,10 @@ import java.sql.Timestamp;
 import java.time.*;
 
 public class AppointmentQuery {
-    /** SQL Query to get all appointments in the database */
+
+
+    /** SQL Query to get all appointments in the database.
+     * @return Appointment objects. */
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
@@ -49,7 +51,20 @@ public class AppointmentQuery {
         return appointments;
     }
 
-    /** Method to add appointments to the database. */
+    /** Method to add appointments to the database.
+     *      @param title Object title.
+     *      @param description Object description.
+     *      @param location Object location.
+     *      @param type Object type.
+     *      @param start Object time starts.
+     *      @param end Object time end.
+     *      @param createDate Object create date.
+     *      @param createdBy Object created by.
+     *      @param lastUpdated Object update date.
+     *      @param lastUpdatedBy Object updated by.
+     *      @param customerId Object customer id.
+     *      @param userId Object user id.
+     *      @param contactId Object contact id.*/
     public static void add(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy,
                            int customerId, int userId, int contactId) throws SQLException {
         String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, " +
@@ -63,9 +78,9 @@ public class AppointmentQuery {
         ps.setString(4, type);
         ps.setTimestamp(5, Timestamp.valueOf(start));
         ps.setTimestamp(6, Timestamp.valueOf(end));
-        ps.setTimestamp(7, Timestamp.valueOf(createDate));
+        ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         ps.setString(8, createdBy);
-        ps.setTimestamp(9, lastUpdated);
+        ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         ps.setString(10, lastUpdatedBy);
         ps.setInt(11, customerId);
         ps.setInt(12, userId);
@@ -128,7 +143,8 @@ public class AppointmentQuery {
             throw new RuntimeException(e);
         }
 }
-    /** Method to get appointments sorted by week. */
+    /** Method to get appointments sorted by week.
+     * @return Object weekly appointments. */
     public static ObservableList<Appointment> getWeeklyAppointments() {
         ObservableList<Appointment> weeklyAppointments = FXCollections.observableArrayList();
 
@@ -160,7 +176,8 @@ public class AppointmentQuery {
         return weeklyAppointments;
     }
 
-    /** Method to get appointments sorted by monthly */
+    /** Method to get appointments sorted by monthly.
+     * @return Object monthly appointments. */
     public static ObservableList<Appointment> getMonthlyAppointments() {
         ObservableList<Appointment> monthlyAppointments = FXCollections.observableArrayList();
 
@@ -192,7 +209,8 @@ public class AppointmentQuery {
         return monthlyAppointments;
     }
 
-    /** Method to get appointments sorted for a specific user. */
+    /** Method to get appointments sorted for a specific user.
+     * @return Object user appointments. */
     public static ObservableList<Appointment> getUserAppointments(int userID) {
         ObservableList<Appointment> userAppointments = FXCollections.observableArrayList();
         try {
@@ -220,7 +238,8 @@ public class AppointmentQuery {
         return userAppointments;
     }
 
-    /** Method to get total number of appointments by month. */
+    /** Method to get total number of appointments by month.
+     * @return Object number of appointments by month. */
     public static ObservableList<Appointment> getAppointmentMonthlyTotal() {
         ObservableList<Appointment> appointmentMonthlyTotal = FXCollections.observableArrayList();
         try {
@@ -240,7 +259,8 @@ public class AppointmentQuery {
         return appointmentMonthlyTotal;
     }
 
-    /** Method to get a total number of appointments by type. */
+    /** Method to get a total number of appointments by type.
+     * @return Object number of appointments by type. */
     public static ObservableList<Appointment> getNumAppointmentsByType() {
         ObservableList<Appointment> numAppointmentsByType = FXCollections.observableArrayList();
         try {
@@ -259,7 +279,9 @@ public class AppointmentQuery {
         return numAppointmentsByType;
     }
 
-    /** Method to get appointments for a specific contact by contactId. */
+    /** Method to get appointments for a specific contact by contactId.
+     * @param contactID Object contact id.
+     * @return Object appointments by contact id.*/
     public static ObservableList<Appointment> getContactAppointments(int contactID) {
         ObservableList<Appointment> contactAppointment = FXCollections.observableArrayList();
         try {

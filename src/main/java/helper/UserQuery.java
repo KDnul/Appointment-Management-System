@@ -8,20 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserQuery extends  User{
+public class UserQuery{
     private static ObservableList<User> allUsers = FXCollections.observableArrayList();
 
-    /**
-     * User constructor
-     *
-     * @param id       Object id
-     * @param name     Object name
-     * @param password Object password.
-     */
-    public UserQuery(int id, String name, String password) {
-        super(id, name, password);
-    }
-
+    /** Method to retrieve al users from the database.
+     * @return all users. */
     public static ObservableList<User> getAllUsers() {
         try {
             String sql = "SELECT * FROM USERS";
@@ -40,7 +31,10 @@ public class UserQuery extends  User{
         return allUsers;
     }
 
-    /** Authentication Method to authenticate user login. */
+    /** Authentication Method to authenticate user login.
+     * @param username Object username.
+     * @param password Object password.
+     * @return Integer. */
     public static int authenticateUser(String username, String password) {
         try {
             String sql =  "SELECT * FROM users WHERE user_name = '" + username + "' AND password = '" + password +"'";
@@ -65,6 +59,9 @@ public class UserQuery extends  User{
         return -1;
     }
 
+    /** Method to get user id by username.
+     * @param username Object user name.
+     * @return Integer for user id.*/
     public static int getUserIdByName(String username) throws SQLException {
         int userId = -1; //Default value
 

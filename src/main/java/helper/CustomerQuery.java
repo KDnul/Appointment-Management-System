@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 
 public class CustomerQuery {
 
-    /** Method to put all customers to a list to retrieve for later use */
+    /** Method to put all customers to a list to retrieve for later use.
+     * @return Customer classes. */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         try {
@@ -50,6 +51,16 @@ public class CustomerQuery {
         return allCustomers;
     }
 
+    /** Method to insert object to the database.
+     * @param name Object name.
+     * @param address Object address.
+     * @param postalCode Object postal code.
+     * @param phone Object phone number.
+     * @param createDate Object create date.
+     * @param createdBy Object created by.
+     * @param lastUpdated Object last updated.
+     * @param lastUpdatedBy Object last updated by.
+     * @param divisionId Object division id. */
     public static void insert(String name, String address, String postalCode,
                               String phone, LocalDateTime createDate, String createdBy, Timestamp lastUpdated,
                               String lastUpdatedBy, int divisionId) throws SQLException {
@@ -70,7 +81,14 @@ public class CustomerQuery {
             ps.executeUpdate();
     }
 
-    /** Method to update customer based on customer Id */
+    /** Method to update customer based on customer Id.
+     * @param name Object name.
+     * @param address Object address.
+     * @param postalCode Object postal code.
+     * @param phone Object phone number.
+     * @param lastUpdated Object last updated.
+     * @param lastUpdatedBy Object last updated by.
+     * @param divisionId Object division id. */
     public static void update(int id, String name, String address, String postalCode,
                               String phone,Timestamp lastUpdated,
                               String lastUpdatedBy, int divisionId) throws SQLException {
@@ -90,7 +108,9 @@ public class CustomerQuery {
         ps.executeUpdate();
     }
 
-    /** Method to delete appointment based on customerId */
+    /** Method to delete appointment based on customerId.
+     * @param customerId Object customer id.
+     * @return Integer to delete customer. */
     public static int delete(int customerId) throws SQLException {
         String sql = "DELETE FROM CUSTOMERS WHERE Customer_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);

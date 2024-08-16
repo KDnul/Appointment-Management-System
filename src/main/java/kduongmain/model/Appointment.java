@@ -3,6 +3,7 @@ package kduongmain.model;
 
 import javafx.scene.control.Alert;
 
+import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -28,17 +29,40 @@ public class Appointment {
     private  int numAppointments;
 
     /** Appointment Constructor
-     @param id Object id
-     @param title Object title
-     @param description Object description
-     @param location Object location
-     @param type Object type
-     @param timeStart Object time starts
-     @param timeEnd Object time ends
-     @param customerId Object customer id
-     @param userId Object user id
+     @param id Object id.
+     @param title Object title.
+     @param description Object description.
+     @param location Object location.
+     @param type Object type.
+     @param timeStart Object time starts.
+     @param timeEnd Object time end.
+     @param createDate Object create date.
+     @param createdBy Object created by.
+     @param updateDate Object update date.
+     @param updatedBy Object updated by.
+     @param customerId Object customer id.
+     @param userId Object user id.
      @param contactId Object contact id. */
-    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId) {
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd, LocalDateTime createDate, String createdBy, LocalDateTime
+            updateDate, String updatedBy, int customerId, int userId, int contactId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.updateDate = updateDate;
+        this.updatedBy = updatedBy;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
+
+    /** Overloaded appointment constructor. */
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd, int customerId, int userId, int contactId) {
         this.id = id;
         this.title = title;
         this.description = description;
