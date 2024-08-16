@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.time.*;
 
 public class MainApplication extends Application {
+    /** Starting page upon application start. */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
@@ -19,6 +20,7 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    /** Main application. */
     public static void main(String[] args) {
         JDBC.openConnection();
 
