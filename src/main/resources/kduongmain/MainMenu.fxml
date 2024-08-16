@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="405.0" prefWidth="414.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.MainMenuController">
+  <padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+  </padding>
+
+  <Label fx:id="welcomeText" text="Welcome">
+      <font>
+         <Font name="System Bold" size="24.0" />
+      </font></Label>
+  <Button fx:id="mainCustomersBtn" alignment="CENTER" onAction="#onCustomersBtnClicked" prefHeight="25.0" prefWidth="100.0" text="Customers" textAlignment="CENTER" />
+   <Button fx:id="mainAppointmentsBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onAppointmentsBtnClicked" prefHeight="25.0" prefWidth="100.0" text="Appointments" textAlignment="CENTER" />
+   <Button fx:id="mainRecordsBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onRecordsBtnClicked" prefWidth="100.0" text="Records" textAlignment="CENTER" />
+   <Button fx:id="mainExitBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onExitBtnClicked" prefHeight="25.0" prefWidth="102.0" text="Exit" textAlignment="CENTER" />
+</VBox>

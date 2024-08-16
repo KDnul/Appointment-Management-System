@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="505.0" prefWidth="894.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kduongmain.controller.CustomerViewController">
+   <children>
+      <TableView fx:id="customerTableVIew" layoutX="29.0" layoutY="44.0" prefHeight="343.0" prefWidth="855.0">
+        <columns>
+          <TableColumn fx:id="customerIdCol" prefWidth="72.0" text="Customer ID" />
+          <TableColumn fx:id="customerNameCol" prefWidth="133.0" text="Name" />
+            <TableColumn fx:id="customerAddressCol" prefWidth="123.0" text="Address" />
+            <TableColumn fx:id="customerPostalCodeCol" minWidth="9.0" prefWidth="130.0" text="Postal Code" />
+            <TableColumn fx:id="customerPhoneNumberCol" prefWidth="146.0" text="Phone Number" />
+            <TableColumn fx:id="customerDivisionCol" prefWidth="163.0" text="State/Province" />
+            <TableColumn fx:id="customerCountryCol" prefWidth="85.0" text="Country" />
+        </columns>
+      </TableView>
+      <Button fx:id="customerAddBtn" layoutX="222.0" layoutY="397.0" mnemonicParsing="false" onAction="#onCustomerAddBtnClicked" text="Add Customer" />
+      <Button fx:id="customerModBtn" layoutX="331.0" layoutY="397.0" mnemonicParsing="false" onAction="#onCustomerModBtnClicked" text="Modify Customer" />
+      <Button fx:id="customerDelBtn" layoutX="452.0" layoutY="397.0" mnemonicParsing="false" onAction="#onCustomerDelBtnClicked" text="Delete Customer" />
+      <Button fx:id="customerBackBtn" layoutX="681.0" layoutY="466.0" mnemonicParsing="false" onAction="#onCustomerBackBtnClicked" prefHeight="25.0" prefWidth="76.0" text="Back" />
+      <Label layoutX="15.0" layoutY="14.0" text="Customers">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

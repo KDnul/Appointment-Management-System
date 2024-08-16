@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="900.0" style="-fx-background-color: #f4e500; -fx-border-color: #000000; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.helloworldjfxtemplate.controller.ReportsController">
+    <children>
+        <TabPane layoutY="50.0" prefHeight="303.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="appointTotalTab" text="Appointment Totals">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="appTypeTableView" layoutX="51.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointType" prefWidth="159.0" text="Appointment Type" />
+                                        <TableColumn fx:id="appointTypeTotal" prefWidth="165.0" text="Total" />
+                                    </columns>
+                                </TableView>
+                                <TableView fx:id="appMonthTableView" layoutX="525.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointMonth" prefWidth="162.0" text="Appointment By Month" />
+                                        <TableColumn fx:id="appointMonthTotal" prefWidth="162.0" text="Total" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="contScheduleTab" text="Contact Schedule">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="14.0" layoutY="14.0" text="Select a Contact:" />
+                                <ComboBox fx:id="cb_contact" layoutX="121.0" layoutY="10.0" onAction="#setCb_contPopulate" prefWidth="150.0" />
+                                <TableView fx:id="contAppTableView" layoutY="40.0" prefHeight="227.0" prefWidth="900.0">
+                                    <columns>
+                                        <TableColumn fx:id="col_appointID" prefWidth="100.0" text="Appointment ID" />
+                                        <TableColumn fx:id="col_appointTitle" prefWidth="100.0" text="Title" />
+                                        <TableColumn fx:id="col_appointDesc" prefWidth="100.0" text="Description" />
+                                        <TableColumn fx:id="col_appointCont" prefWidth="100.0" text="Contact" />
+                                        <TableColumn fx:id="col_appointType" prefWidth="100.0" text="Type" />
+                                        <TableColumn fx:id="col_appointStartDate" prefWidth="100.0" text="Start date / Time" />
+                                        <TableColumn fx:id="col_appointEndDate" prefWidth="100.0" text="End date / Time" />
+                                        <TableColumn fx:id="col_custID" prefWidth="100.0" text="Customer ID" />
+                                        <TableColumn fx:id="col_userID" prefWidth="100.0" text="User ID" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="appointCountryTab" text="Customer Total By Country">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="countryTableView" layoutX="65.0" layoutY="37.0" prefHeight="200.0" prefWidth="325.0">
+                                    <columns>
+                                        <TableColumn fx:id="appointCountry" prefWidth="159.0" text="Country" />
+                                        <TableColumn fx:id="appointCountryTotal" prefWidth="165.0" text="Customer Total" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        <Button fx:id="btn_menu" layoutX="804.0" layoutY="361.0" mnemonicParsing="false" onAction="#setBtn_menu" style="-fx-background-color: #0800a1; -fx-cursor: hand;" text="TO MENU" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Label layoutX="32.0" layoutY="14.0" text="REPORTS" textFill="#0800a1" underline="true">
+            <font>
+                <Font name="System Bold Italic" size="18.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
