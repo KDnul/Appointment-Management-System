@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"kduong.c195software","l":"helper"},{"m":"kduong.c195software","l":"kduongmain"},{"m":"kduong.c195software","l":"kduongmain.controller"},{"m":"kduong.c195software","l":"kduongmain.model"}];updateSearchResults();

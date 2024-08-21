@@ -83,7 +83,7 @@ public class MainMenuController implements Initializable {
             ResourceBundle rb = ResourceBundle.getBundle("Nat", Locale.getDefault());
             if(Locale.getDefault().getLanguage().equals("fr")) {
                 mainCustomersBtn.setText(rb.getString("Customers"));
-                mainAppointmentsBtn.setText(rb.getString("Appointments"));
+                mainAppointmentsBtn.setText(rb.getString("Appointment"));
                 mainRecordsBtn.setText(rb.getString("Records"));
                 mainExitBtn.setText(rb.getString("Exit"));
             }

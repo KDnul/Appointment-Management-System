@@ -110,6 +110,10 @@ public class ReportsController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+//    @FXML
+//    void setContactCBPopulate(ActionEvent event) throws SQLException {
+//
+//    }
 
     /** Method to populate the contact combo box in the Contact Schedule tab. */
     public void contactPopulate() throws SQLException {
@@ -225,6 +229,25 @@ public class ReportsController implements Initializable {
             reportsScheduleEndDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("timeEnd"));
             reportsScheduleCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             reportsScheduleUserCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+            // Add event handler for when a contact is selected
+            reportsContactCB.setOnAction(event -> {
+                String selectedContact = reportsContactCB.getValue();
+                if (selectedContact != null) {
+                    try {
+                        // Retrieve contact ID for the selected contact name
+                        int contactId = getContactId(selectedContact);
+
+                        // Fetch appointments associated with the selected contact ID
+                        ObservableList<Appointment> appointments = getAppointmentsForContact(contactId);
+
+                        // Display appointments in the table view
+                        reportsScheduleContactTableView.setItems(appointments);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

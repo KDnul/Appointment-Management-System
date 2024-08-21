@@ -76,7 +76,7 @@ public class AppointmentModifyController implements Initializable {
     Parent scene;
     Stage stage;
 
-    /** Action even for when the cancel button is clicked. Discards all changes being made and sends the user back to the Appointment View FXML. */
+    /** Action even for when the cancel button is clicked. Discards all changes being made and sends the user back to the Appointment View FXML.*/
     @FXML
     void onModAppointmentCancelBtnClicked(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?\nAll values will be discarded.");
@@ -92,7 +92,7 @@ public class AppointmentModifyController implements Initializable {
     }
 
     /** Action event for when the user clicks the save button in the Appointment Modify Form FMXL. Grabs all current fields and updates the currently selected
-     * appointment using the Appointment Update method. If there is an error in the form, throws an error to the user to fill out the forms correctly. */
+     * appointment using the Appointment Update method. If there is an error in the form, throws an error to the user to fill out the forms correctly.*/
     @FXML
     void onModAppointmentSaveBtnClicked(ActionEvent event) throws SQLException {
         int id = Integer.parseInt(modAppointmentId.getText());
@@ -150,7 +150,7 @@ public class AppointmentModifyController implements Initializable {
     }
 
     /** Grabs data form the Appointment view FXML of the current selected customer and populates the Appointment modify FXML with the appropriate values.
-     * @param appointment Appointment class of selected Appointment in the Appointment view FXML. */
+     * @param appointment Appointment class of selected Appointment in the Appointment view FXML.*/
     public void sendAppointment(Appointment appointment) {
         modAppointmentId.setText(String.valueOf(appointment.getId()));
         modAppointmentTitleTxt.setText(appointment.getTitle());
@@ -166,7 +166,7 @@ public class AppointmentModifyController implements Initializable {
         modAppointmentUserIdCB.setValue(appointment.getUserName());
     }
 
-    /** Initial setup for Appointment Modify FXML. Pre-populates the combo boxes. The LAMBDA EXPRESSIONS also helps populates the  time combo box to increment every 15 minutes. */
+    /** Initial setup for Appointment Modify FXML. Pre-populates the combo boxes. The LAMBDA EXPRESSIONS also helps populates the  time combo box to increment every 15 minutes.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -186,7 +186,7 @@ public class AppointmentModifyController implements Initializable {
         }
     }
 
-    /** Populates the Start/End time Combo Box. */
+    /** Populates the Start/End time Combo Box.*/
     public static ObservableList<LocalTime> getTime() {
         ObservableList<LocalTime> appointmentTimeList = FXCollections.observableArrayList();
         LocalTime start = LocalTime.of(1, 00);
@@ -199,7 +199,7 @@ public class AppointmentModifyController implements Initializable {
         return appointmentTimeList;
     }
 
-    /** Populates the contact combo box. */
+    /** Populates the contact combo box.*/
     private void populateContactCB() throws SQLException {
         String sql = "SELECT contact_name FROM contacts";
         ObservableList<String> contacts = FXCollections.observableArrayList();
@@ -216,8 +216,7 @@ public class AppointmentModifyController implements Initializable {
     }
 
     /**
-     * Populates the user combo box.
-     */
+     * Populates the user combo box.*/
     private void populateUserCB() throws SQLException {
         String sql = "SELECT User_Name FROM users";
         ObservableList<String> users = FXCollections.observableArrayList();
@@ -233,7 +232,7 @@ public class AppointmentModifyController implements Initializable {
         }
     }
 
-    /** Populates the customer combo box. */
+    /** Populates the customer combo box.*/
     private void populateCustomerCB() throws SQLException {
         String sql = "SELECT Customer_Name FROM customers";
         ObservableList<String> customers = FXCollections.observableArrayList();
@@ -253,7 +252,7 @@ public class AppointmentModifyController implements Initializable {
 
     /** Gets user id by username.
      * @param userName String value of current username.
-     * @return Returns Integer for userId. */
+     * @return Returns Integer for userId.*/
     private int getUserIdByName(String userName) throws SQLException {
         String sql = "SELECT User_ID FROM users WHERE user_name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -270,7 +269,7 @@ public class AppointmentModifyController implements Initializable {
 
     /** Gets contact id by contact name.
      * @param contactName String value of current contact.
-     * @return contactId Returns Integer for contact Id. */
+     * @return contactId Returns Integer for contact Id.*/
     private int getContactIdByName(String contactName) throws SQLException {
         String sql = "SELECT Contact_ID FROM Contacts WHERE Contact_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -287,7 +286,7 @@ public class AppointmentModifyController implements Initializable {
 
     /** Gets customer id by customer name.
      * @param customerName String value of current customer.
-     * @return Returns Integer for customer Id. */
+     * @return Returns Integer for customer Id.*/
     private int getCustomerIdByName(String customerName) throws SQLException {
         String sql = "SELECT Customer_ID FROM customers WHERE Customer_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -304,7 +303,7 @@ public class AppointmentModifyController implements Initializable {
 
     /** Method to check if start and end times are within the business hours of the business.
      * @param startDateTime Local Date Time of the start hours of the business.
-     * @param endDateTime Loca Date Time of the end hours of the business. */
+     * @param endDateTime Loca Date Time of the end hours of the business.*/
     private boolean isInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         // Define business hours in ET

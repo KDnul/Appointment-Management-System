@@ -24,24 +24,24 @@ public class MainApplication extends Application {
     public static void main(String[] args) {
         JDBC.openConnection();
 
-        LocalDate myLd = LocalDate.now();
-        LocalTime myLt = LocalTime.now();
-
-        System.out.println("LOCAL DATE IS : " + myLd);
-        System.out.println("LOCAL TIME IS : " + myLt);
-
-        LocalDateTime myLtd = LocalDateTime.of(myLd, myLt);
-        ZoneId myZoneId = ZoneId.systemDefault();
-        ZonedDateTime myZdt = ZonedDateTime.of(myLtd, myZoneId);
-
-        System.out.println("User Time: " + myZdt);
-
-        ZoneId utcZoneId = ZoneId.of("UTC");
-        ZonedDateTime utcZdt = ZonedDateTime.ofInstant(myZdt.toInstant(), utcZoneId);
-        System.out.println("User time to UTC: " + utcZdt);
-
-        myZdt = ZonedDateTime.ofInstant(utcZdt.toInstant(), utcZoneId);
-        System.out.println("UTC to User Time: " + myZdt);
+//        LocalDate myLd = LocalDate.now();
+//        LocalTime myLt = LocalTime.now();
+//
+//        System.out.println("LOCAL DATE IS : " + myLd);
+//        System.out.println("LOCAL TIME IS : " + myLt);
+//
+//        LocalDateTime myLtd = LocalDateTime.of(myLd, myLt);
+//        ZoneId myZoneId = ZoneId.systemDefault();
+//        ZonedDateTime myZdt = ZonedDateTime.of(myLtd, myZoneId);
+//
+//        System.out.println("User Time: " + myZdt);
+//
+//        ZoneId utcZoneId = ZoneId.of("UTC");
+//        ZonedDateTime utcZdt = ZonedDateTime.ofInstant(myZdt.toInstant(), utcZoneId);
+//        System.out.println("User time to UTC: " + utcZdt);
+//
+//        myZdt = ZonedDateTime.ofInstant(utcZdt.toInstant(), utcZoneId);
+//        System.out.println("UTC to User Time: " + myZdt);
 
         launch();
         JDBC.closeConnection();

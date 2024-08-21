@@ -20,10 +20,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LoginController implements Initializable {
 
@@ -108,7 +105,7 @@ public class LoginController implements Initializable {
                         Alert confirmRemoval = new Alert(Alert.AlertType.WARNING);
                         confirmRemoval.setTitle(ResourceBundle.getBundle("Nat").getString("Alert"));
                         confirmRemoval.setContentText(ResourceBundle.getBundle("Nat").getString("Appointment") + " " +
-                                appointment.getId() + " " + ResourceBundle.getBundle("Nat").getString("beginsat") + " " + appointment.getTimeStart().toLocalDate() + " " + appointment.getTimeStart().toLocalTime());
+                                appointment.getId() + " " + ResourceBundle.getBundle("Nat").getString("begins") + " " + appointment.getTimeStart().toLocalDate() + " " + appointment.getTimeStart().toLocalTime());
                         confirmRemoval.getButtonTypes().clear();
                         confirmRemoval.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
                         confirmRemoval.showAndWait();
@@ -118,8 +115,8 @@ public class LoginController implements Initializable {
                 // if there are no appointments within 15 minutes of a user login
                 if (!isWithin15Minutes) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("No Appointments within 15 minutes");
-                    alert.setContentText("No appointments within 15 minutes");
+                    alert.setTitle("No " + rb.getString("Appointment") + " within 15 minutes");
+                    alert.setContentText("No " + rb.getString("Appointment") + " within 15 minutes");
                     alert.showAndWait();
                 }
 
@@ -167,19 +164,21 @@ public class LoginController implements Initializable {
 
         try{
             ResourceBundle rb = ResourceBundle.getBundle("Nat", Locale.getDefault());
+            System.out.println(rb.getString("hello"));
+            loginUsernameLbl.setText(rb.getString("username"));
+            System.out.println("LOCALE DEFAULT IS: " +Locale.getDefault());
 
             ZoneId zone = ZoneId.systemDefault();
 
             loginLocationTxt.setText(String.valueOf(zone));
 
-            if(Locale.getDefault().getLanguage().equals("fr")) {
+            if(Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("FR") ) {
                 loginLanguageLbl.setText("French");
                 loginUsernameLbl.setText(rb.getString("username"));
                 loginPasswordLbl.setText(rb.getString("password"));
-                loginSubmitBtn.setText(rb.getString("Login"));
+                loginSubmitBtn.setText(rb.getString("login"));
                 loginCancelBtn.setText(rb.getString("Exit"));
-                loginLocationLbl.setText(rb.getString("Location"));
-                loginLocationLbl.setText(rb.getString("Incorrect"));
+                loginLocationLbl.setText(rb.getString("location"));
             }
 
         } catch(MissingResourceException e) {

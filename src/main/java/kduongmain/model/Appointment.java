@@ -61,7 +61,17 @@ public class Appointment {
         this.contactId = contactId;
     }
 
-    /** Overloaded appointment constructor. */
+    /** Overloaded appointment constructor.
+     * @param id Object id
+     * @param title Object title
+     * @param description Object description
+     * @param location Object location
+     * @param type Object type
+     * @param timeStart Object time starts
+     * @param timeEnd Object time ends
+     * @param customerId Object customer id
+     * @param userId Object user id
+     * @param contactId Object contact id. */
     public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd, int customerId, int userId, int contactId) {
         this.id = id;
         this.title = title;
@@ -86,7 +96,7 @@ public class Appointment {
      @param customerId Object customer id
      @param userId Object user id
      @param contactId Object contact id
-     @param contactName Object contact name. */
+     @param contactName Object contact name.*/
     public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId, String contactName) {
         this.id = id;
         this.title = title;
@@ -114,7 +124,7 @@ public class Appointment {
      *  @param contactId Object contact id
      *  @param contactName Object contact name
      *  @param userName Object user name
-     *  @param customerName Object customer name. */
+     *  @param customerName Object customer name.*/
     public Appointment(int id, String title, String description, String location, String type, LocalDateTime timeStart, LocalDateTime timeEnd,int customerId, int userId, int contactId, String customerName, String userName, String contactName) {
         this.id = id;
         this.title = title;
@@ -133,7 +143,7 @@ public class Appointment {
 
     /** Overloaded Appointment constructor.
      * @param type Object type
-     * @param typeTotal Object type total. */
+     * @param typeTotal Object type total.*/
     public Appointment(String type, int typeTotal) {
         this.type = type;
         this.typeTotal = typeTotal;
