@@ -110,10 +110,6 @@ public class ReportsController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-//    @FXML
-//    void setContactCBPopulate(ActionEvent event) throws SQLException {
-//
-//    }
 
     /** Method to populate the contact combo box in the Contact Schedule tab. */
     public void contactPopulate() throws SQLException {
@@ -204,7 +200,8 @@ public class ReportsController implements Initializable {
         throw new SQLException("Contact ID not found for name: " + contactName);
     }
 
-    /** Initial setup of Reports FXML. Pre-populates the tableviews in each tab with appropriate values from the database. */
+    /** Initial setup of Reports FXML. Pre-populates the tableviews in each tab with appropriate values from the database LAMBDA EXPRESSION used for when changing
+     * contacts in the contact CB to display appropriate appointments. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Appointment Totals Tab
