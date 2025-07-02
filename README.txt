@@ -3,8 +3,6 @@
  ## An application designed to manage records of customers, appointments, and schedules for a company that operates within the business hours of
  8:00 am.m ET to 10:00 p.m ET including weekends in multiple languages. Allows the user to update, add, and delete records. Application also tracks user activity.
 
- Author: Kelvin Duong (ID: 001421182)
- Contact: kduong5@wgu.edu
  Application version 1.0
  Date: 08/15/2024
 
